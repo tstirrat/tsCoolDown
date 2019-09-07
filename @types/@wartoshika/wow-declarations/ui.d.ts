@@ -1,5 +1,7 @@
 /// <reference path="global.d.ts" />
 
+/** @noSelfInFile */
+
 declare type WowHorizontalAlign = "LEFT" | "CENTER" | "RIGHT";
 declare type WowVerticalAlign = "TOP" | "MIDDLE" | "BUTTOM";
 declare type WowPoint = "TOP" | "RIGHT" | "BOTTOM" | "LEFT" | "TOPRIGHT" | "TOPLEFT" | "BOTTOMLEFT" | "BOTTOMRIGHT" | "CENTER";
@@ -282,6 +284,11 @@ declare interface WowRegion extends WowUiObject {
      * Get the height of this object.
      */
     GetHeight(): number;
+
+    /**
+     * Set the parent UIObject
+     */
+    SetParent(parent: WowUiObject | null): void;
 
     /**
      * Sets an attachment point of an UI component.
@@ -896,6 +903,8 @@ interface WowButton extends WowFrame {
 
 /**
  * Creates a new UI frame.
+ * 
+ * @noSelf
  * 
  * @param frameType Type of the frame to be created (XML tag name): "Frame", "Button", etc. See UIOBJECT_Frame
  * @param frameName Name of the newly created frame. If nil, no frame name is assigned. The function will also set a global variable of this name to point to the newly created frame.

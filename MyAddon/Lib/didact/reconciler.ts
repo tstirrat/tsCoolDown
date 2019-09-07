@@ -62,7 +62,7 @@ export function reconcile(parentFrame: WowRegion, instance: Instance|null,
 
 function cleanup(frame: WowRegion) {
   frame.Hide();
-  (frame as any).SetParent(null);
+  frame.SetParent(null);
 }
 
 function reconcileChildren(instance: Instance, element: InternalElement) {
@@ -93,7 +93,7 @@ function instantiate(element: InternalElement,
                               props.name || undefined) as WowFrame;
 
     updateFrameProperties(frame, [], props);
-    (frame as any).SetParent(parentFrame);
+    frame.SetParent(parentFrame);
 
     const childElements = props.children || [];
     const childInstances =
