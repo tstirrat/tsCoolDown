@@ -12,29 +12,15 @@ export class Component<P = {}, S = {}> {
     updateInstance(this.__internalInstance);
   }
 
-  render(): InternalElement|null {
-    throw 'render not implemented';
-  }
+  render(): InternalElement|null { throw 'render not implemented'; }
 }
 
 function updateInstance(internalInstance: Instance) {
-  const parentDom = internalInstance.hostFrame.GetParent();
+  const parentDom = internalInstance.hostFrame.GetParent() as WowFrame;
   const element = internalInstance.element;
   if (parentDom) {
     reconcile(parentDom, internalInstance, element);
   } else {
     throw 'Tried to reconcile instance with no dom.parentDom';
-  }
-}
-
-export function createPublicInstance(
-    element: InternalElement, internalInstance: Instance) {
-  const {type: ComponentType, props} = element;
-  if (typeof ComponentType !== 'string') {
-    const publicInstance = new (ComponentType as any)(props);
-    publicInstance.__internalInstance = internalInstance;
-    return publicInstance;
-  } else {
-    throw 'Tried createPublicInstance(string)';
   }
 }

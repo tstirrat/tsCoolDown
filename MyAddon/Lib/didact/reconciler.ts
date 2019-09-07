@@ -1,4 +1,4 @@
-import {Component, createPublicInstance} from './component';
+import {Component} from './component';
 import {InternalElement, TEXT_ELEMENT} from './element';
 import {pascalCase, updateFrameProperties} from './wow-utils';
 
@@ -18,9 +18,8 @@ export function render(element: InternalElement, container: WowRegion) {
   rootInstance = nextInstance;
 }
 
-export function reconcile(
-    parentFrame: WowRegion, instance: Instance|null,
-    element: InternalElement|null): Instance|null {
+export function reconcile(parentFrame: WowRegion, instance: Instance|null,
+                          element: InternalElement|null): Instance|null {
   if (instance == null) {
     // Create instance
     return instantiate(element!, parentFrame);
@@ -35,8 +34,8 @@ export function reconcile(
     return newInstance;
   } else if (typeof element.type === 'string') {
     // Update dom instance
-    updateFrameProperties(
-        instance.hostFrame, instance.element.props, element.props);
+    updateFrameProperties(instance.hostFrame, instance.element.props,
+                          element.props);
     instance.childInstances = reconcileChildren(instance, element);
     instance.element = element;
     return instance;
@@ -81,8 +80,8 @@ function reconcileChildren(instance: Instance, element: InternalElement) {
   return newChildInstances.filter(instance => instance != null);
 }
 
-function instantiate(
-    element: InternalElement, parentFrame: WowRegion): Instance {
+function instantiate(element: InternalElement,
+                     parentFrame: WowRegion): Instance {
   const {type, props} = element;
 
   if (typeof type === 'string') {
@@ -90,9 +89,8 @@ function instantiate(
       throw 'Cannot create inline text, yet';
     }
     // Instantiate DOM element
-    const frame = CreateFrame(
-                      pascalCase(type) as WowFrameType,
-                      props.name || undefined) as WowFrame;
+    const frame = CreateFrame(pascalCase(type) as WowFrameType,
+                              props.name || undefined) as WowFrame;
 
     updateFrameProperties(frame, [], props);
     (frame as any).SetParent(parentFrame);
@@ -102,7 +100,7 @@ function instantiate(
         childElements.map(child => instantiate(child, frame));
 
     const instance: Instance =
-        {hostFrame: frame, element, childInstances, childInstance: null};
+        {hostFrame : frame, element, childInstances, childInstance : null};
     return instance;
   } else {
     // Instantiate component element
@@ -116,5 +114,17 @@ function instantiate(
         Partial<Instance> = {hostFrame, element, childInstance, publicInstance};
     Object.assign(instance, updateProps);
     return instance;
+  }
+}
+
+function createPublicInstance(element: InternalElement,
+                              internalInstance: Instance) {
+  const {type : ComponentType, props} = element;
+  if (typeof ComponentType !== 'string') {
+    const publicInstance = new (ComponentType as any)(props);
+    publicInstance.__internalInstance = internalInstance;
+    return publicInstance;
+  } else {
+    throw 'Tried createPublicInstance(string)';
   }
 }
