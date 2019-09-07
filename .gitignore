@@ -1,3 +1,4 @@
 **/node_modules/
 **/*.lua
 **/*.js
+!MyAddon/core/*.lua

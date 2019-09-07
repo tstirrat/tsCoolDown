@@ -1,0 +1,18 @@
+## Interface: 11302
+## Version: 0.0.1
+## Title: MyAddon
+## Notes: React + TypeScript + WoW PoC
+## Author: tstirrat, wereHamster/coolDown, asmdel
+
+core/RequireStub.lua
+core/lualib_bundle.lua
+
+Lib/didact/component.lua
+Lib/didact/didact.lua
+Lib/didact/element.lua
+Lib/didact/reconciler.lua
+Lib/didact/wow-utils.lua
+
+App.lua
+
+MyAddon.lua
