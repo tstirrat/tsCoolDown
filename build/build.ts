@@ -4,19 +4,19 @@ import * as tstl from 'typescript-to-lua';
 import {CustomTransformer} from './custom_transformer';
 
 const options: tstl.CompilerOptions = {
-  luaTarget: tstl.LuaTarget.Lua51
+  luaTarget : tstl.LuaTarget.Lua51,
+  luaLibImport : tstl.LuaLibImportKind.Require,
+  jsxFactory : 'Didact.createElement'
 };
-const program = ts.createProgram({rootNames: ['MyAddon/MyAddon.tsx'], options});
+const program = ts.createProgram(
+    {rootNames : [ 'MyAddon/MyAddon.tsx', 'MyAddon/App.tsx' ], options});
 
 const transformer = new CustomTransformer(program);
 const printer = new tstl.LuaPrinter(options, ts.sys);
 
-const result = tstl.transpile({
-  program,
-  transformer,
-  printer,
-});
-console.log(result.diagnostics);
+const result = tstl.transpile({program, transformer, printer});
 
-const emitResult = tstl.emitTranspiledFiles(options, result.transpiledFiles)
+result.diagnostics.length && console.log(result.diagnostics);
+
+const emitResult = tstl.emitTranspiledFiles(options, result.transpiledFiles);
 emitResult.forEach(({name, text}) => ts.sys.writeFile(name, text));

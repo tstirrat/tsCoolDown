@@ -14,7 +14,7 @@ export class CustomTransformer extends tstl.LuaTransformer {
       if (!expression.expression) {
         throw new Error('JsxExpression has no .expression');
       }
-      return this.transformExpression(expression.expression)
+      return this.transformExpression(expression.expression);
     }
     return super.transformExpression(expression);
   }
@@ -24,27 +24,26 @@ export class CustomTransformer extends tstl.LuaTransformer {
     if (ts.isJsxSelfClosingElement(expression)) {
       return this.transformJsxOpeningElement(expression);
     }
-    return this.transformJsxOpeningElement(
-        expression.openingElement,
-        expression.children,
-    );
+    return this.transformJsxOpeningElement(expression.openingElement,
+                                           expression.children);
   }
 
-  protected transformJsxOpeningElement(
-      expression: ts.JsxSelfClosingElement|ts.JsxOpeningElement,
-      children?: ts.NodeArray<ts.JsxChild>,
-      ): tstl.ExpressionVisitResult {
+  protected transformJsxOpeningElement(expression: ts.JsxSelfClosingElement|
+                                       ts.JsxOpeningElement,
+                                       children?: ts.NodeArray<ts.JsxChild>):
+      tstl.ExpressionVisitResult {
     // <Something a="b" />
     // React.createElement(Something, {a = 'b'})
+    const [library, create] = this.options.jsxFactory
+                                  ? this.options.jsxFactory.split('.')
+                                  : [ 'React', 'createElement' ];
     const createElement = tstl.createTableIndexExpression(
-        tstl.createIdentifier('React'),
-        tstl.createStringLiteral('createElement'));
+        tstl.createIdentifier(library), tstl.createStringLiteral(create));
     const tagName = expression.tagName.getText();
 
-    const tag = tagName.toLowerCase() === tagName ?
-        tstl.createStringLiteral(tagName) :
-        tstl.createIdentifier(tagName);
-
+    const tag = tagName.toLowerCase() === tagName
+                    ? tstl.createStringLiteral(tagName)
+                    : tstl.createIdentifier(tagName);
 
     const props = this.transformJsxAttributesExpression(expression.attributes);
 
@@ -52,19 +51,18 @@ export class CustomTransformer extends tstl.LuaTransformer {
       const childrenOrStringLiterals =
           children
               .filter(child => !ts.isJsxText(child) || child.text.trim() !== '')
-              .map(
-                  child => ts.isJsxText(child) ?
-                      ts.createStringLiteral(child.text.trim()) :
-                      child);
+              .map(child => ts.isJsxText(child)
+                                ? ts.createStringLiteral(child.text.trim())
+                                : child);
       const arrayLiteral =
           ts.createArrayLiteral(childrenOrStringLiterals, true);
 
       return tstl.createCallExpression(
-          createElement, [tag, props, this.transformArrayLiteral(arrayLiteral)],
-          expression);
+          createElement,
+          [ tag, props, this.transformArrayLiteral(arrayLiteral) ], expression);
     }
 
-    return tstl.createCallExpression(createElement, [tag, props], expression);
+    return tstl.createCallExpression(createElement, [ tag, props ], expression);
   }
 
   public transformJsxAttributesExpression(expression: ts.JsxAttributes):
@@ -75,19 +73,20 @@ export class CustomTransformer extends tstl.LuaTransformer {
     }
     const properties =
         expression.properties
-            .filter(
-                (element): element is ts.JsxAttribute =>
-                    element.kind !== ts.SyntaxKind.JsxSpreadAttribute)
+            .filter((element): element is ts.JsxAttribute =>
+                        element.kind !== ts.SyntaxKind.JsxSpreadAttribute)
             .map(element => {
-              const valueOrExpression = element.initializer ?
-                  element.initializer :
-                  ts.createLiteral(true);
-              return ts.createPropertyAssignment(
-                  element.name, valueOrExpression);
+              const valueOrExpression = element.initializer
+                                            ? element.initializer
+                                            : ts.createLiteral(true);
+              return ts.createPropertyAssignment(element.name,
+                                                 valueOrExpression);
             });
 
     return this.transformObjectLiteral(ts.createObjectLiteral(properties));
   }
+
+  // ------------ Module wrapping
 
   public transformSourceFile(sourceFile: ts.SourceFile): tstl.Block {
     let statements: tstl.Statement[] = [];
@@ -98,7 +97,7 @@ export class CustomTransformer extends tstl.LuaTransformer {
       }
 
       statements.push(tstl.createReturnStatement(
-          [this.transformExpression(statement.expression)]));
+          [ this.transformExpression(statement.expression) ]));
     } else {
       this.pushScope(tstl.ScopeType.File);
       statements =
@@ -113,15 +112,30 @@ export class CustomTransformer extends tstl.LuaTransformer {
               this.createExportsIdentifier(), tstl.createTableExpression()));
         }
 
+        // statements.push(tstl.createExpressionStatement(moduleCallExpression));
+
         // return exports
-        // statements.push(
-        //     tstl.createReturnStatement([this.createExportsIdentifier()]));
+        statements.push(
+            tstl.createReturnStatement([ this.createExportsIdentifier() ]));
+
+        const moduleFunction = tstl.createFunctionExpression(
+            tstl.createBlock(statements), undefined, undefined, undefined,
+            tstl.FunctionExpressionFlags.None);
+
+        const cwd = this.program.getCurrentDirectory();
+        const moduleName = this.currentSourceFile.fileName.replace(cwd, '')
+                               .replace(/^\//, '')
+                               .replace(/\.tsx?$/, '')
+                               .replace(/\//g, '.');
+        console.log(moduleName);
+
+        // tstl_register_module("module/name", function() ... end)
         const moduleCallExpression = tstl.createCallExpression(
-            tstl.createIdentifier('tstl_register_module'), [
-              tstl.createStringLiteral(this.currentSourceFile.fileName),
-              this.createExportsIdentifier()
-            ]);
-        statements.push(tstl.createExpressionStatement(moduleCallExpression));
+            tstl.createIdentifier('tstl_register_module'),
+            [ tstl.createStringLiteral(moduleName), moduleFunction ]);
+
+        return tstl.createBlock(
+            [ tstl.createExpressionStatement(moduleCallExpression) ]);
       }
     }
 
