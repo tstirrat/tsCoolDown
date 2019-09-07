@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "lib": ["esnext", "dom"],
+    "strict": true,
+    "jsx": "react",
+    "jsxFactory": "Didact.createElement",
+    "moduleResolution": "node",
+    "rootDir": "MyAddon",
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/@wartoshika/wow-declarations"
+    ],
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
+  },
+  "tstl": {
+    "luaTarget": "5.1",
+    "luaLibImport": "none"
+  }
+}
