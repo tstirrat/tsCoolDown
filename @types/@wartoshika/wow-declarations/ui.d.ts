@@ -904,19 +904,17 @@ interface WowButton extends WowFrame {
 /**
  * Creates a new UI frame.
  * 
- * @noSelf
- * 
  * @param frameType Type of the frame to be created (XML tag name): "Frame", "Button", etc. See UIOBJECT_Frame
  * @param frameName Name of the newly created frame. If nil, no frame name is assigned. The function will also set a global variable of this name to point to the newly created frame.
  * @param parentFrame The frame object that will be used as the created Frame's parent (cannot be a string!) Does not default to UIParent if given nil.
  * @param inheritsFrame a comma-delimited list of names of virtual frames to inherit from (the same as in XML). If nil, no frames will be inherited. These frames cannot be frames that were created using this function, they must be created using XML with virtual="true" in the tag.
  * @param id ID to assign to the frame. See API Frame SetID
  */
-declare function CreateFrame(frameType: WowFrameType, frameName?: string, parentFrame?: WowUiObject, inheritsFrame?: string, id?: number): WowUiObject
-declare function CreateFrame(frameType: "Frame", frameName?: string, parentFrame?: WowUiObject, inheritsFrame?: string, id?: number): WowFrame;
-declare function CreateFrame(frameType: "Slider", frameName?: string, parentFrame?: WowUiObject, inheritsFrame?: string, id?: number): WowSlider;
-declare function CreateFrame(frameType: "EditBox", frameName?: string, parentFrame?: WowUiObject, inheritsFrame?: string, id?: number): WowEditBox;
-declare function CreateFrame(frameType: "Button", frameName?: string, parentFrame?: WowUiObject, inheritsFrame?: string, id?: number): WowButton;
+declare function CreateFrame(this: void, frameType: WowFrameType, frameName?: string, parentFrame?: WowUiObject, inheritsFrame?: string, id?: number): WowUiObject
+declare function CreateFrame(this: void, frameType: "Frame", frameName?: string, parentFrame?: WowUiObject, inheritsFrame?: string, id?: number): WowFrame;
+declare function CreateFrame(this: void, frameType: "Slider", frameName?: string, parentFrame?: WowUiObject, inheritsFrame?: string, id?: number): WowSlider;
+declare function CreateFrame(this: void, frameType: "EditBox", frameName?: string, parentFrame?: WowUiObject, inheritsFrame?: string, id?: number): WowEditBox;
+declare function CreateFrame(this: void, frameType: "Button", frameName?: string, parentFrame?: WowUiObject, inheritsFrame?: string, id?: number): WowButton;
 
 /**
  * Adds a configuration panel (with the fields described in #Panel fields below set) to the category list. The optional position argument (number) allows addons to insert top-level panels at arbitrary positions in the category list.

@@ -8,7 +8,8 @@ const options: tstl.CompilerOptions = {
   luaLibImport: tstl.LuaLibImportKind.Require,
   jsxFactory: 'Didact.createElement',
   rootDir: './MyAddon',
-  outDir: './MyAddon/build'
+  outDir: './MyAddon/build',
+  typeRoots: ['./@types', './node_modules/@types']
 };
 const program = ts.createProgram({
   rootNames: ['MyAddon/MyAddon.tsx', 'MyAddon/App.tsx'],

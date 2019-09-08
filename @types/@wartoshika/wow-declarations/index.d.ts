@@ -1,3 +1,5 @@
+/** @noSelfInFile */
+
 import "./constants";
 import "./global";
 
