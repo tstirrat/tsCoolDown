@@ -1,6 +1,6 @@
 import {Component} from './component';
 import {InternalElement, TEXT_ELEMENT} from './element';
-import {pascalCase, updateFrameProperties} from './wow-utils';
+import {updateFrameProperties, createFrame, cleanupFrame} from './wow-utils';
 
 export interface Instance {
   publicInstance?: Component;
@@ -22,18 +22,18 @@ export function reconcile(parentFrame: WowRegion, instance: Instance|null,
                           element: InternalElement|null): Instance|null {
   if (instance == null) {
     // Create instance
-    return instantiate(element!, parentFrame);
+    return instantiate(assert(element, 'element should not be null'), parentFrame);
   } else if (element == null) {
     // Remove instance
-    cleanup(instance.hostFrame);
+    cleanupFrame(instance.hostFrame);
     return null;
   } else if (instance.element.type !== element.type) {
     // Replace instance
     const newInstance = instantiate(element, parentFrame);
-    cleanup(instance.hostFrame);
+    cleanupFrame(instance.hostFrame);
     return newInstance;
   } else if (typeof element.type === 'string') {
-    // Update dom instance
+    // Update host element
     updateFrameProperties(instance.hostFrame, instance.element.props,
                           element.props);
     instance.childInstances = reconcileChildren(instance, element);
@@ -60,11 +60,6 @@ export function reconcile(parentFrame: WowRegion, instance: Instance|null,
   }
 }
 
-function cleanup(frame: WowRegion) {
-  frame.Hide();
-  frame.SetParent(null);
-}
-
 function reconcileChildren(instance: Instance, element: InternalElement) {
   const hostFrame = instance.hostFrame;
   const childInstances = instance.childInstances;
@@ -88,12 +83,11 @@ function instantiate(element: InternalElement,
     if (type === TEXT_ELEMENT) {
       throw 'Cannot create inline text, yet';
     }
-    // Instantiate DOM element
-    const frame = CreateFrame(pascalCase(type) as WowFrameType,
-                              props.name || undefined) as WowFrame;
+
+    // Instantiate host element
+    const frame = createFrame(type, props.name, parentFrame, props.inheritsFrom);
 
     updateFrameProperties(frame, [], props);
-    frame.SetParent(parentFrame);
 
     const childElements = props.children || [];
     const childInstances =

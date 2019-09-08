@@ -1,3 +1,17 @@
+export function createFrame(type: string, name?: string, parentFrame?: WowRegion, inheritsFrom?: string) {
+  const frame = CreateFrame(pascalCase(type) as WowFrameType, name, undefined, inheritsFrom) as WowFrame;
+  if (parentFrame) {
+    frame.SetParent(parentFrame);
+  }
+  return frame;
+}
+
+export function cleanupFrame(frame: WowRegion) {
+  frame.Hide();
+  frame.ClearAllPoints();
+  frame.SetParent(null);
+}
+
 export function updateFrameProperties(frame: WowFrame,
                                       prevProps: Record<string, any>,
                                       nextProps: Record<string, any>) {
@@ -6,15 +20,15 @@ export function updateFrameProperties(frame: WowFrame,
       !isEvent(name) && name !== 'children' && name !== 'Points';
 
   frame.ClearAllPoints();
-  if (nextProps['Points']) {
-    (nextProps as JSX.BaseFrameProps)!.Points!.forEach(point => {
-      if (typeof point === 'string') {
-        frame.SetPoint(point);
-      } else {
-        frame.SetPoint(...point);
-      }
-    });
-  }
+  // if (nextProps['Points']) {
+  //   (nextProps as JSX.BaseFrameProps)!.Points!.forEach(point => {
+  //     if (typeof point === 'string') {
+  //       frame.SetPoint(point);
+  //     } else {
+  //       frame.SetPoint(...point);
+  //     }
+  //   });
+  // }
 
   // Remove event listeners
   Object.keys(prevProps).filter(isEvent).forEach(
