@@ -1,28 +1,38 @@
-export function updateFrameProperties(
-    frame: WowFrame, prevProps: Record<string, any>,
-    nextProps: Record<string, any>) {
+export function updateFrameProperties(frame: WowFrame,
+                                      prevProps: Record<string, any>,
+                                      nextProps: Record<string, any>) {
   const isEvent = (name: string) => name.startsWith('On');
-  const isAttribute = (name: string) => !isEvent(name) && name !== 'children';
+  const isAttribute = (name: string) =>
+      !isEvent(name) && name !== 'children' && name !== 'Points';
+
+  frame.ClearAllPoints();
+  if (nextProps['Points']) {
+    (nextProps as JSX.BaseFrameProps)!.Points!.forEach(point => {
+      if (typeof point === 'string') {
+        frame.SetPoint(point);
+      } else {
+        frame.SetPoint(...point);
+      }
+    });
+  }
 
   // Remove event listeners
-  Object.keys(prevProps).filter(isEvent).forEach(event => {
-    frame.SetScript(event as WowEventOnAny, null);
-  });
+  Object.keys(prevProps).filter(isEvent).forEach(
+      event => { frame.SetScript(event as WowEventOnAny, null); });
 
   // Add event listeners
-  Object.keys(nextProps).filter(isEvent).forEach(event => {
-    frame.SetScript(event as WowEventOnAny, nextProps[event]);
-  });
+  Object.keys(nextProps).filter(isEvent).forEach(
+      event => { frame.SetScript(event as WowEventOnAny, nextProps[event]); });
 
   // Remove attributes
-  Object.keys(prevProps).filter(isAttribute).forEach(key => {
-    attemptSetProperty(frame, key, null);
-  });
+  Object.keys(prevProps)
+      .filter(isAttribute)
+      .forEach(key => { attemptSetProperty(frame, key, null); });
 
   // Set attributes
-  Object.keys(nextProps).filter(isAttribute).forEach(key => {
-    attemptSetProperty(frame, key, nextProps[key]);
-  });
+  Object.keys(nextProps)
+      .filter(isAttribute)
+      .forEach(key => { attemptSetProperty(frame, key, nextProps[key]); });
 }
 
 function attemptSetProperty(frame: WowFrame, key: string, value: any) {
