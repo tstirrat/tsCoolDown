@@ -1,3 +1,5 @@
+/** @noSelfInFile */
+
 import {Component} from './didact';
 
 export interface InternalElement {
@@ -17,14 +19,14 @@ interface Props {
 export const TEXT_ELEMENT = 'TEXT ELEMENT';
 
 export function createElement(
-    type: string, config: Props, ...args: ChildElement[]) {
+    type: string|Component, config: Props, ...args: ChildElement[]) {
   const props = Object.assign({}, config);
   const hasChildren = args.length > 0;
   const rawChildren = hasChildren ? [...args] : [];
   props.children =
       rawChildren
           .filter((c): c is InternalElement|string => c != null && c !== false)
-          .map(c => c instanceof Object ? c : createTextElement(c));
+          .map(c => typeof c === 'string' ? createTextElement(c) : c);
   return {type, props};
 }
 
