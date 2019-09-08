@@ -1,3 +1,4 @@
+/** @noSelfInFile */
 declare type WowFacialHairCustomizationGlobalType = "EARRINGS" | "FEATURES" | "HAIR" | "HORNS" | "MARKINGS" | "NORMAL" | "PIERCINGS" | "TUSKS";
 declare type WowFacialHairCustomizationType = "HORNS" | "NORMAL";
 

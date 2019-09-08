@@ -1,3 +1,4 @@
+/** @noSelfInFile */
 /// <reference path="global.d.ts" />
 /// <reference path="ui.d.ts" />
 
@@ -36,7 +37,7 @@ declare type ARCHAELOLOGY_BRANCH = ARCHAELOLOGY_BRANCH_DWARF | ARCHAELOLOGY_BRAN
 
 /**
  * Returns how many digsites are in a zone like Azsuna or Elwynn Forest
- * 
+ *
  * @returns the number of digsites the player can use  [Survey] on in a zone. The player must actually be in a zone that can be surveyed
  * @see https://wow.gamepedia.com/API_ArchaeologyMapUpdateAll
  * @since 5.4.0
@@ -45,7 +46,7 @@ declare function ArchaeologyMapUpdateAll(): number;
 
 /**
  * Unknown
- * 
+ *
  * @param index Unknown
  * @see https://wow.gamepedia.com/API_ArchaeologyGetIconInfo
  * @since 4.0.0
@@ -54,7 +55,7 @@ declare function ArchaeologyGetIconInfo(index: WowUnknown): WowUnknown;
 
 /**
  * Returns 1 if item could be added to the selected artifact
- * 
+ *
  * @param itemId Unknown
  * @see https://wow.gamepedia.com/API_CanItemBeSocketedToArtifact
  * @since 4.0.0
@@ -63,7 +64,7 @@ declare function CanItemBeSocketedToArtifact(itemId: number): WowFlag;
 
 /**
  * Returns whether the player is currently on a digsite
- * 
+ *
  * @returns true if the player is currently on a digsite (and can use  [Survey]), false otherwise
  * @see https://wow.gamepedia.com/API_CanScanResearchSite
  * @since 5.4.0
@@ -72,7 +73,7 @@ declare function CanScanResearchSite(): boolean;
 
 /**
  * Return true if artifact can be solved
- * 
+ *
  * @see https://wow.gamepedia.com/API_CanSolveArtifact
  * @since 4.0.0
  */
@@ -80,7 +81,7 @@ declare function CanSolveArtifact(): boolean;
 
 /**
  * Unknown
- * 
+ *
  * @see https://wow.gamepedia.com/API_CloseResearch
  * @since 4.0.0
  */
@@ -88,7 +89,7 @@ declare function CloseResearch(): WowUnknown;
 
 /**
  * Returns the information for a specific race's active artifact
- * 
+ *
  * @param raceIndex Index of the race to pick the artifact from
  * @returns artifactName, artifactDescription, artifactRarity, artifactIcon, hoverDescription, keystoneCount, bgTexture
  * @see https://wow.gamepedia.com/API_GetActiveArtifactByRace
@@ -98,7 +99,7 @@ declare function GetActiveArtifactByRace(raceIndex: number): [string, string, AR
 
 /**
  * Returns the localized name for Archaeology
- * 
+ *
  * @returns Localized name of the Archaeology secondary skill
  * @see https://wow.gamepedia.com/API_GetArchaeologyInfo
  * @since 4.0.0
@@ -107,7 +108,7 @@ declare function GetArchaeologyInfo(): string;
 
 /**
  * Returns the information for a specific race used in Archaeology
- * 
+ *
  * @param raceIndex Index of the race to query, between 1 and GetNumArchaeologyRaces().
  * @returns raceName, raceTexture, raceItemID, numFragmentsCollected, numFragmentsRequired, maxFragments
  * @see https://wow.gamepedia.com/API_GetArchaeologyRaceInfo
@@ -117,7 +118,7 @@ declare function GetArchaeologyRaceInfo(raceIndex: number): [string, WowTextureP
 
 /**
  * Returns information about a branch of Archaeology
- * 
+ *
  * @param branchId ID of the research branch (race) to query.
  * @returns raceName, raceTextureID, raceItemID, numFragmentsCollected, numFragmentsRequired, maxFragments
  * @see https://wow.gamepedia.com/API_GetArchaeologyRaceInfoByID
@@ -127,7 +128,7 @@ declare function GetArchaeologyRaceInfoByID(branchId: ARCHAELOLOGY_BRANCH): [str
 
 /**
  * Returns the information for a specific race's artifact
- * 
+ *
  * @param raceIndex Index of the race to pick the artifact from
  * @param artifactIndex Index of the artifact
  * @returns artifactName, artifactDescription, artifactRarity, artifactIcon, hoverDescription, keystoneCount, bgTexture, firstCompletionTime, completionCount
@@ -138,7 +139,7 @@ declare function GetArtifactInfoByRace(raceIndex: number, artifactIndex: number)
 
 /**
  * Returns the number of Archaeology races in the game
- * 
+ *
  * @returns The number of Archaeology races in the game
  * @see https://wow.gamepedia.com/API_GetNumArchaeologyRaces
  * @since 4.0.0
@@ -147,7 +148,7 @@ declare function GetNumArchaeologyRaces(): number;
 
 /**
  * Returns the amount of artifacts the player has acquired from the provided race.
- * 
+ *
  * @param raceIndex Index of the race to be selected.
  * @returns Number of artifacts for that race
  * @see https://wow.gamepedia.com/API_GetNumArtifactsByRace
@@ -157,7 +158,7 @@ declare function GetNumArtifactsByRace(raceIndex: number): number;
 
 /**
  * Returns the information for the selected race's current archaeology artifact
- * 
+ *
  * @returns artifactName, artifactDescription, artifactRarity, artifactIcon, hoverDescription, keystoneCount, bgTexture, spellId
  * @see https://wow.gamepedia.com/API_GetSelectedArtifactInfo
  * @since 4.0.0
@@ -166,7 +167,7 @@ declare function GetSelectedArtifactInfo(): [string, string, ARCHAELOLOGY_RARITY
 
 /**
  * Returns information about current used fragments for the selected artifact
- * 
+ *
  * @returns numFragmentsCollected, numFragmentsAdded, numFragmentsRequired
  * @see https://wow.gamepedia.com/API_GetArtifactProgress
  * @since 4.0.0
@@ -175,7 +176,7 @@ declare function GetArtifactProgress(): [number, number, number];
 
 /**
  * Unknown
- * 
+ *
  * @param args Unknown
  * @see https://wow.gamepedia.com/API_IsArtifactCompletionHistoryAvailable
  * @since 4.0.0
@@ -184,7 +185,7 @@ declare function IsArtifactCompletionHistoryAvailable(...args: WowUnknown[]): Wo
 
 /**
  * Returns if there is a keystone in the artifact
- * 
+ *
  * @param keystoneIndex Unknown
  * @see https://wow.gamepedia.com/API_ItemAddedToArtifact
  * @since 4.0.0
@@ -193,7 +194,7 @@ declare function ItemAddedToArtifact(keystoneIndex: WowUnknown): WowUnknown;
 
 /**
  * Set the artifact-pointer to raceIndex
- * 
+ *
  * @param raceIndex Index of the race to select
  * @see https://wow.gamepedia.com/API_SetSelectedArtifact
  * @since 4.0.0
@@ -202,7 +203,7 @@ declare function SetSelectedArtifact(raceIndex: number): void;
 
 /**
  * Remove a Keystone from the selected artifact
- * 
+ *
  * @returns True if the keystone is successfully removed
  * @see https://wow.gamepedia.com/API_RemoveItemFromArtifact
  * @since 4.0.0
@@ -211,7 +212,7 @@ declare function RemoveItemFromArtifact(): boolean;
 
 /**
  * Queries the server for archeology data. RESEARCH_ARTIFACT_HISTORY_READY is fired when data is available
- * 
+ *
  * @event RESEARCH_ARTIFACT_HISTORY_READY
  * @see https://wow.gamepedia.com/API_RequestArtifactCompletionHistory
  * @since 4.0.0
@@ -220,7 +221,7 @@ declare function RequestArtifactCompletionHistory(): void;
 
 /**
  * Socked a Keystone to the selected artifact
- * 
+ *
  * @returns True if the keystone is successfully added
  * @see https://wow.gamepedia.com/API_SocketItemToArtifact
  * @since 4.0.0
@@ -229,7 +230,7 @@ declare function SocketItemToArtifact(): boolean;
 
 /**
  * Solve the selected artifact
- * 
+ *
  * @see https://wow.gamepedia.com/API_SolveArtifact
  * @since 4.0.0
  */

@@ -1,3 +1,4 @@
+/** @noSelfInFile */
 declare type WowTypedEvents = {
 
     /**
@@ -1017,7 +1018,7 @@ declare type WowTypedEvents = {
 
     /**
      * Fired when the client receives a channel message
-     * 
+     *
      * - **arg1**: chat message
      * - **arg2**: author
      * - **arg3**: language
@@ -1035,7 +1036,7 @@ declare type WowTypedEvents = {
 
     /**
      * Fired when someone joins a chat channel you are in
-     * 
+     *
      * - **arg1**: seems to be empty
      * - **arg2**: Name of the player that joined
      * - **arg3**: seems to be empty again
@@ -1048,7 +1049,7 @@ declare type WowTypedEvents = {
 
     /**
      * Fired when a player leaves a channel that you are currently inside
-     * 
+     *
      * - **arg1**: Appears to be left blank
      * - **arg2**: Player name that left
      * - **arg3**: Channel name with number
@@ -1374,7 +1375,7 @@ declare type WowTypedEvents = {
 
     /**
      * Fired when a whisper is received from another player
-     * 
+     *
      * - **arg1**: Message received
      * - **arg2**: Author (e.g. "Arthas-Silvermoon")
      * - **arg3**: Language (or nil if universal, like messages from GM) (always seems to be an empty string; argument may have been kicked because whispering in non-standard language doesn't seem to be possible [any more?])
@@ -3717,7 +3718,7 @@ declare type WowTypedEvents = {
 
     /**
      * Fired when the pet journal is updated
-     * @description Fired whenever the information returned by C_PetJournal.GetPetInfoByIndex might have been updated, for instance by the user changing the pet journal filters. Also fired when the player learns, cages or releases a battle pet, even if that pet is currently filtered out of the displayed pet list. 
+     * @description Fired whenever the information returned by C_PetJournal.GetPetInfoByIndex might have been updated, for instance by the user changing the pet journal filters. Also fired when the player learns, cages or releases a battle pet, even if that pet is currently filtered out of the displayed pet list.
      * @see https://wow.gamepedia.com/PET_JOURNAL_LIST_UPDATE
      */
     PET_JOURNAL_LIST_UPDATE: null;
@@ -3881,13 +3882,13 @@ declare type WowTypedEvents = {
     /**
      * Fired when the player enters the world, enters/leaves an instance, or respawns at a graveyard. Also fires any other time the player sees a loading screen
      * To check if the player is entering an instance, check GetPlayerMapPosition to see if both X and Y are zero.
-     * 
+     *
      * Correction on the above comment: When PLAYER_ENTERING_WORLD fires, you'll notice that WORLD_MAP_UPDATE fires just before it. My instincts tell that leaving an instance puts the player in void space momentarily. So for the case that you are entering AND leaving an instance, GetPlayerMapPosition always returns the coordinates [0,0] and hence there is no way to determine using the event PLAYER_ENTERING_WORLD if the player is entering an instance or not. When leaving an instance the following events fire (ignoring party/raid events).
-     * 
+     *
      * - WORLD_MAP_UPDATE
      * - PLAYER_ENTERING_WORLD
      * - WORLD_MAP_UPDATE <--- Player coordinates are non-zero here
-     * 
+     *
      * Instances do have coordinates for units once the second WORLD_MAP_UPDATE event has fired. For the case of entering a battleground such as WSG, WORLD_MAP_UPDATE won't fire until you leave Silverwing Hold or Warsong Lumber Mill and you are outside.
      * @see https://wow.gamepedia.com/PLAYER_ENTERING_WORLD
      */
@@ -4815,10 +4816,10 @@ declare type WowTypedEvents = {
 
     /**
      * Added in 4.0 for the Spell Alert overlay feature
-     * - **arg1**: spellID 
-     * - **arg2**: texture 
+     * - **arg1**: spellID
+     * - **arg2**: texture
      * - **arg3**: position, Possible values include simple points such as "CENTER" or "LEFT", or complex positions such as "RIGHT (FLIPPED)" or "TOP + BOTTOM (FLIPPED)", which are defined in a local table in SpellActivationOverlay.lua
-     * - **arg4**: scale 
+     * - **arg4**: scale
      * - **arg5**: red
      * - **arg6**: green
      * - **arg7**: blue

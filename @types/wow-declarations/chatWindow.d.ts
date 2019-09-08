@@ -1,3 +1,4 @@
+/** @noSelfInFile */
 /**
  * Retrieves configuration information about a chat window
  * @param frameIndex The index of the chat window to get information for (starts at 1 to NUM_CHAT_WINDOWS).

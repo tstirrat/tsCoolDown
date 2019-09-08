@@ -1,3 +1,4 @@
+/** @noSelfInFile */
 declare type ITEM_QUALITY_GENERIC = -1;
 declare type ITEM_QUALITY_POOR = 0;
 declare type ITEM_QUALITY_COMMON = 1;
