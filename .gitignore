@@ -3,3 +3,4 @@
 **/*.lua
 build/dist/
 **/*.js.map
+!gulpfile.js
