@@ -89,56 +89,30 @@ export class CustomTransformer extends tstl.LuaTransformer {
   // ------------ Module wrapping
 
   public transformSourceFile(sourceFile: ts.SourceFile): tstl.Block {
-    let statements: tstl.Statement[] = [];
-    if (sourceFile.flags & ts.NodeFlags.JsonFile) {
-      const statement = sourceFile.statements[0];
-      if (!statement || !ts.isExpressionStatement(statement)) {
-        throw new Error(`Invalid JSON ${sourceFile}`);
-      }
+    const block = super.transformSourceFile(sourceFile);
+    if (this.isModule) {
+      const moduleFunction =
+          tstl.createFunctionExpression(block, undefined, undefined, undefined,
+                                        tstl.FunctionExpressionFlags.None);
 
-      statements.push(tstl.createReturnStatement(
-          [ this.transformExpression(statement.expression) ]));
-    } else {
-      this.pushScope(tstl.ScopeType.File);
-      statements =
-          this.performHoisting(this.transformStatements(sourceFile.statements));
-      this.popScope();
+      const cwd = this.program.getCurrentDirectory();
+      const moduleName =
+          this.currentSourceFile.fileName.replace(cwd, '')
+              .replace(/^\//, '')  // remove leading slash
+              .replace(/^\w*/, '') // remove first folder (root folder)
+              .replace(/^\//, '')  // remove leading slash
+              .replace(/\.tsx?$/, '')
+              .replace(/\//g, '.');
+      // console.log(moduleName);
 
-      if (this.isModule) {
-        // If export equals was not used. Create the exports table.
-        // local exports = {}
-        if (!this.visitedExportEquals) {
-          statements.unshift(tstl.createVariableDeclarationStatement(
-              this.createExportsIdentifier(), tstl.createTableExpression()));
-        }
+      // tstl_register_module("module/name", function() ... end)
+      const moduleCallExpression = tstl.createCallExpression(
+          tstl.createIdentifier('tstl_register_module'),
+          [ tstl.createStringLiteral(moduleName), moduleFunction ]);
 
-        // statements.push(tstl.createExpressionStatement(moduleCallExpression));
-
-        // return exports
-        statements.push(
-            tstl.createReturnStatement([ this.createExportsIdentifier() ]));
-
-        const moduleFunction = tstl.createFunctionExpression(
-            tstl.createBlock(statements), undefined, undefined, undefined,
-            tstl.FunctionExpressionFlags.None);
-
-        const cwd = this.program.getCurrentDirectory();
-        const moduleName = this.currentSourceFile.fileName.replace(cwd, '')
-                               .replace(/^\//, '')
-                               .replace(/\.tsx?$/, '')
-                               .replace(/\//g, '.');
-        console.log(moduleName);
-
-        // tstl_register_module("module/name", function() ... end)
-        const moduleCallExpression = tstl.createCallExpression(
-            tstl.createIdentifier('tstl_register_module'),
-            [ tstl.createStringLiteral(moduleName), moduleFunction ]);
-
-        return tstl.createBlock(
-            [ tstl.createExpressionStatement(moduleCallExpression) ]);
-      }
+      return tstl.createBlock(
+          [ tstl.createExpressionStatement(moduleCallExpression) ]);
     }
-
-    return tstl.createBlock(statements, sourceFile);
+    return block;
   }
 }

@@ -17,3 +17,10 @@ function require(name)
     error('Module not preloaded: ' .. name)
   end
 end
+
+tstl_register_module(
+  'lualib_bundle',
+  function()
+    return {}
+  end
+)
