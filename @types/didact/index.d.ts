@@ -6,6 +6,7 @@ declare namespace JSX {
   interface BaseFrameProps {
     name?: string;
     layer?: WowLayer;
+    inheritsFrom?: string;
     Width?: number;
     Height?: number;
     Size?: [number, number];
