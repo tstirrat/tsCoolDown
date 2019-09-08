@@ -14,6 +14,4 @@ build/Lib/didact/wow-utils.lua
 
 build/Lib/didact/didact.lua
 
-build/App.lua
-
 build/MyAddon.lua
