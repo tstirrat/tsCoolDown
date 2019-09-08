@@ -24,6 +24,7 @@ import "./character";
 import "./characterStatistics";
 import "./gossip";
 import "./debug";
+import "./calendar";
 import "./event";
 import "./security";
 import "./system";

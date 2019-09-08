@@ -7,10 +7,9 @@
     "jsxFactory": "Didact.createElement",
     "moduleResolution": "node",
     "rootDir": "./MyAddon",
-    "typeRoots": ["./@types", "./node_modules/@types"],
-    "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "outDir": "./dist"
   },
+  "exclude": ["build/"],
   "tstl": {
     "luaTarget": "5.1",
     "luaLibImport": "none"

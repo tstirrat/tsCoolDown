@@ -1,3 +1,5 @@
 **/node_modules/
 **/*.js
-**/build/**/*.lua
+**/*.lua
+build/dist/
+**/*.js.map

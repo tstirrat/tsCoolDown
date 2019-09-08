@@ -45,6 +45,8 @@ declare type ActionBarSlotId = SlotActionBarPage1 | SlotActionBarPage2 | SlotAct
  */
 declare type WowHyperlink = string;
 
+declare function assert<T>(assertion: T|undefined|null, message?: string): T;
+
 
 
 
