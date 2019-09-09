@@ -7,7 +7,7 @@ export interface InternalElement {
   props: Props;
 }
 
-export type ChildElement = InternalElement|string|boolean|null;
+export type ChildElement = InternalElement[]|InternalElement|string|boolean|null;
 
 interface Props {
   key?: string;
@@ -21,8 +21,7 @@ export const TEXT_ELEMENT = 'TEXT ELEMENT';
 export function createElement(
     type: string|Component, config: Props, children?: ChildElement[]) {
   const props: Props = {...config};
-  const hasChildren = children && children.length > 0;
-  const rawChildren = hasChildren ? [...children || []] : [];
+  const rawChildren = children && children.length ? children.flat() : [];
   props.children =
       rawChildren
           .filter((c): c is InternalElement|string => c != null && c !== false)
