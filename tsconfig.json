@@ -6,7 +6,7 @@
     "jsx": "react",
     "jsxFactory": "Didact.createElement",
     "moduleResolution": "node",
-    "rootDir": "./MyAddon",
+    "rootDir": "tsCoolDown",
     "outDir": "./dist"
   },
   "exclude": ["build/"],
