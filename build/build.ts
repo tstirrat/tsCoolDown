@@ -9,13 +9,13 @@ const options: tstl.CompilerOptions = {
   strict: true,
   jsx: ts.JsxEmit.React,
   jsxFactory: 'Didact.createElement',
-  rootDir: './MyAddon',
-  outDir: './MyAddon/build',
+  rootDir: './tsCoolDown',
+  outDir: './tsCoolDown/build',
   typeRoots: ['@types', 'node_modules/@types'],
   luaTarget: tstl.LuaTarget.Lua51,
   luaLibImport: tstl.LuaLibImportKind.Require,
 };
-const program = ts.createProgram({rootNames: ['MyAddon/MyAddon.tsx'], options});
+const program = ts.createProgram({rootNames: ['tsCoolDown/tsCoolDown.tsx'], options});
 
 const transformer = new CustomTransformer(program);
 const printer = new tstl.LuaPrinter(options, ts.sys);

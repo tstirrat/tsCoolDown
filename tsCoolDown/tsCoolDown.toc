@@ -1,8 +1,8 @@
 ## Interface: 11302
 ## Version: 0.0.1
-## Title: MyAddon
+## Title: tsCoolDown
 ## Notes: React + TypeScript + WoW PoC
-## Author: tstirrat, wereHamster/coolDown, asmdel
+## Author: tstirrat, wereHamster/asmdel
 
 RequireStub.lua
 
@@ -20,4 +20,4 @@ build/Components/Bar.lua
 build/Components/Cooldown.lua
 build/Components/Icon.lua
 
-build/MyAddon.lua
+build/tsCoolDown.lua

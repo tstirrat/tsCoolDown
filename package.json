@@ -2,7 +2,7 @@
   "name": "tscooldown",
   "version": "1.0.0",
   "description": "tsCoolDown - React + WoW POC based on wereHamster/coolDown",
-  "main": "MyAddon/MyAddon.ts",
+  "main": "tsCoolDown/tsCoolDown.ts",
   "scripts": {
     "build": "ts-node ./build/build.ts",
     "watch": "gulp watch",

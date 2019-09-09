@@ -2,7 +2,7 @@ const gulp = require('gulp');
 var cp = require('child_process');
 
 const paths = {
-  addon: 'MyAddon/**/*.{ts,tsx}',
+  addon: 'tsCoolDown/**/*.{ts,tsx}',
 };
 
 gulp.task('watch', gulp.series(build, watch));
