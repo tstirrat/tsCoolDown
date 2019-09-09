@@ -3,14 +3,35 @@ declare namespace JSX {
       [WowPoint, string, WowPoint,
        number]|[WowPoint, string, WowPoint]|[WowPoint, string]|[WowPoint];
 
+  type Color4 = [number, number, number, number];
+  type Size = [number, number];
+  type Font = [string, number];
+
   interface BaseFrameProps {
     name?: string;
     layer?: WowLayer;
     inheritsFrom?: string;
     Width?: number;
     Height?: number;
-    Size?: [number, number];
+    Size?: Size;
     Points?: Point[];
+    Point?: Point|WowPoint;
+  }
+
+  interface LayeredRegionProps extends BaseFrameProps {
+    VertexColor?: Color4;
+  }
+
+  interface TextureProps extends LayeredRegionProps {
+    Texture?: string;
+  }
+
+  interface FontInstanceProps extends LayeredRegionProps {
+    Font?: Font;
+  }
+
+  interface FontStringProps extends FontInstanceProps {
+    Text?: string;
   }
 
   interface IntrinsicElements {
@@ -30,7 +51,7 @@ declare namespace JSX {
     'status-bar': BaseFrameProps;
 
     // Other things
-    'font-string': BaseFrameProps&{Text: string};
-    texture: BaseFrameProps&{Text: string};
+    'font-string': FontStringProps;
+    texture: TextureProps;
   }
 }
