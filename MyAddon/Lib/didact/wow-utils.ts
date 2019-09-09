@@ -40,7 +40,14 @@ const isStandardProperty = (name: string) =>
  */
 const isOrderedProperty = (name: string) => name === 'Font' ||
                                             name === 'Background' ||
-                                            name === 'Texture';
+                                            name === 'Texture' ||
+                                            name === 'Backdrop';
+/**
+ * These properties take table values, which should be set verbatim. Array values
+ * will apply each item as an argument to SetX. These values should not be interpreted
+ * as arrays.
+ */
+const isTableValue = (name: string) => name === 'Backdrop';
 
 export function updateFrameProperties(frame: WowRegion,
                                       prevProps: Props,
@@ -128,10 +135,10 @@ function attemptSetProperty(frame: WowRegion, key: string, value: any) {
   const setter = `Set${key}`;
   const setterFn = region[setter];
   if (setterFn && typeof setterFn == 'function') {
-    if (typeof value === 'string' || typeof value === 'number') {
+    if (typeof value === 'string' || typeof value === 'number' || isTableValue(key)) {
       region[setter](value);
     } else {
-      console.log('calling with array elements as args:', (value as any[]).join(', '));
+      console.log(`calling ${setter} with array elements as args:`, (value as any[]).join(', '));
       setterFn.apply(region, value);
     }
   }
