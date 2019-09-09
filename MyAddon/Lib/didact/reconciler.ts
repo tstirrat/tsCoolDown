@@ -6,7 +6,7 @@ export interface Instance {
   publicInstance?: Component;
   childInstance: Instance|null;
   childInstances: Array<Instance|null>;
-  hostFrame: WowFrame;
+  hostFrame: WowRegion;
   element: InternalElement;
 }
 
@@ -20,10 +20,10 @@ export function render(element: InternalElement, container: WowRegion) {
 
 export function reconcile(parentFrame: WowRegion, instance: Instance|null,
                           element: InternalElement|null): Instance|null {
-  if (instance == null) {
+  if (!instance) {
     // Create instance
     return instantiate(assert(element, 'element should not be null'), parentFrame);
-  } else if (element == null) {
+  } else if (!element) {
     // Remove instance
     cleanupFrame(instance.hostFrame);
     return null;
@@ -60,24 +60,24 @@ export function reconcile(parentFrame: WowRegion, instance: Instance|null,
   }
 }
 
-function reconcileChildren(instance: Instance, element: InternalElement) {
+function reconcileChildren(instance: Instance, element: InternalElement): Instance[] {
   const hostFrame = instance.hostFrame;
   const childInstances = instance.childInstances;
   const nextChildElements = element.props.children || [];
-  const newChildInstances = [];
-  const count = Math.max(childInstances.length, nextChildElements.length);
-  for (let i = 0; i < count; i++) {
-    const childInstance = childInstances[i];
+
+  const newChildInstances = childInstances.map((childInstance, i) => {
     const childElement = nextChildElements[i];
-    const newChildInstance = reconcile(hostFrame, childInstance, childElement);
-    newChildInstances.push(newChildInstance);
-  }
-  return newChildInstances.filter(instance => instance != null);
+    return reconcile(hostFrame, childInstance, childElement);
+  });
+
+  return newChildInstances.filter((instance): instance is Instance => instance != null);
 }
 
 function instantiate(element: InternalElement,
                      parentFrame: WowRegion): Instance {
   const {type, props} = element;
+
+  console.log('instantiate', type, Object.keys(props || {}).join(', '));
 
   if (typeof type === 'string') {
     if (type === TEXT_ELEMENT) {
@@ -94,9 +94,11 @@ function instantiate(element: InternalElement,
         childElements.map(child => instantiate(child, frame));
 
     const instance: Instance =
-        {hostFrame : frame, element, childInstances, childInstance : null};
+        {hostFrame: frame, element, childInstances, childInstance : null};
     return instance;
-  } else {
+
+  } else  {
+    console.log('instantiate Component', Object.keys(element || {}).join(', '));
     // Instantiate component element
     const instance = {} as Instance;
     const publicInstance = createPublicInstance(element, instance);
@@ -113,12 +115,16 @@ function instantiate(element: InternalElement,
 
 function createPublicInstance(element: InternalElement,
                               internalInstance: Instance) {
-  const {type : ComponentType, props} = element;
-  if (typeof ComponentType !== 'string') {
-    const publicInstance = new (ComponentType as any)(props);
-    publicInstance.__internalInstance = internalInstance;
-    return publicInstance;
-  } else {
-    throw 'Tried createPublicInstance(string)';
+  const {type: ComponentType, props} = element;
+  if (!ComponentType) {
+    throw 'Tried createPublicInstance() with undefined';
   }
+
+  if (typeof ComponentType === 'string') {
+    throw 'Tried createPublicInstance() with string';
+  }
+
+  const publicInstance = new (ComponentType as any)(props);
+  publicInstance.__internalInstance = internalInstance;
+  return publicInstance;
 }
