@@ -5,21 +5,20 @@ const SIZE: JSX.Size = [31, 31];
 
 export interface Props {
   texture: string;
-  Points?: JSX.Point[];
-  key?: string; // TODO
+  Point: JSX.PointDefinition;
+  key?: string;
 }
 
 export class Icon extends Didact.Component<Props, {}> {
   render() {
-    const { texture, Points } = this.props;
+    const { texture, Point } = this.props;
     assert(texture, 'texture is required');
 
     return (
-      <frame name={name} Size={SIZE} Points={Points}>
+      <frame Size={SIZE} Point={Point}>
         <texture
           layer="OVERLAY"
           Texture="Interface\Buttons\UI-Debuff-Border"
-          Size={SIZE}
           Point="CENTER"
           VertexColor={COLOR_BLACK}
         />

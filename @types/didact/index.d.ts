@@ -1,7 +1,13 @@
 declare namespace JSX {
-  type Point = WowPoint|[WowPoint, string, WowPoint, number, number]|
-      [WowPoint, string, WowPoint,
-       number]|[WowPoint, string, WowPoint]|[WowPoint, string]|[WowPoint];
+  interface PointDefinition {
+    point: WowPoint;
+    relativePoint?: WowPoint;
+    relativeFrame?: WowRegion|string;
+    x?: number;
+    y?: number;
+  }
+
+  type Point = PointDefinition|WowPoint;
 
   type Color4 = [number, number, number, number];
   type Tuple<T = number> = [T, T];
@@ -21,7 +27,7 @@ declare namespace JSX {
     Height?: number;
     Size?: Size;
     Points?: Point[];
-    Point?: Point|WowPoint;
+    Point?: Point;
     Backdrop?: WowBackdrop;
     BackdropBorderColor?: Color4;
     BackdropColor?: Color4;

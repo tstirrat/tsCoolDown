@@ -103,29 +103,40 @@ function updateFrameEvents(
 }
 
 /** Handle frame points, size to parent unless specified. */
-function updateFramePoints(frame: WowRegion, nextProps: Props) {
+function updateFramePoints(frame: WowRegion, nextProps: JSX.BaseFrameProps) {
   frame.ClearAllPoints();
-  if (nextProps['Point']) {
-    frame.SetPoint(nextProps['Point']);
+  if (nextProps.Point) {
+    setPoint(frame, nextProps.Point);
     return;
   }
-  if (nextProps['Points']) {
-    const points = (nextProps as JSX.BaseFrameProps).Points!;
-    points.forEach(point => {
-      if (typeof point === 'string') {
-        frame.SetPoint(point);
-      } else {
-        const [thisPoint, relativeTo, parentPoint, x, y] = point;
-        if (relativeTo && parentPoint) {
-          frame.SetPoint(thisPoint, relativeTo, parentPoint, x || 0, y || 0);
-        } else {
-          frame.SetPoint(thisPoint, x || 0, y || 0);
-        }
-      }
-    });
+  if (nextProps.Points) {
+    const points = nextProps.Points;
+    points.forEach(pointDef => setPoint(frame, pointDef));
   } else {
     // Fill to parent
     frame.SetAllPoints();
+  }
+}
+
+/** Create a point declaration */
+export function P(
+    point: WowPoint, relativePoint?: WowPoint, x?: number, y?: number,
+    relativeFrame?: WowRegion): JSX.PointDefinition {
+  return {point, relativePoint, relativeFrame, x, y};
+}
+
+function setPoint(frame: WowRegion, pointDef: JSX.Point) {
+  if (typeof pointDef === 'string') {
+    frame.SetPoint(pointDef);
+  } else {
+    const {point, relativePoint, relativeFrame, x, y} = pointDef;
+    const relativeTo = relativePoint || point;
+    if (relativeFrame) {
+      frame.SetPoint(point, relativeFrame, relativeTo, x || 0, y || 0);
+    } else {
+      const parent = frame.GetParent() as WowRegion;
+      frame.SetPoint(point, parent, relativeTo, x || 0, y || 0);
+    }
   }
 }
 
@@ -133,6 +144,8 @@ function attemptSetProperty(frame: WowRegion, key: string, value: any) {
   const region = frame as any as Record<string, (v: any) => void>;
   const setter = `Set${key}`;
   const setterFn = region[setter];
+  assert(setterFn, `Tried to use ${setter} and it did not exist`);
+
   if (setterFn && typeof setterFn == 'function') {
     if (typeof value === 'string' || typeof value === 'number' ||
         isTableValue(key)) {

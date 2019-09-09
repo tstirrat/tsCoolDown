@@ -28,15 +28,6 @@ interface State {
 }
 
 export class Bar extends Didact.Component<Props, State> {
-  private readonly onUpdate = throttle(() => {
-    const { start, duration } = this.props;
-    const secondsRemaining = getRemainingTime(start, duration);
-    this.setState({
-      secondsRemaining,
-      label: formatRemainingTime(secondsRemaining)
-    });
-  }, 0.2);
-
   constructor(props: Props) {
     super(props);
     assert(props.start, 'start is required');
@@ -48,6 +39,15 @@ export class Bar extends Didact.Component<Props, State> {
       label: formatRemainingTime(secondsRemaining)
     };
   }
+
+  private readonly onUpdate = throttle(() => {
+    const { start, duration } = this.props;
+    const secondsRemaining = getRemainingTime(start, duration);
+    this.setState({
+      secondsRemaining,
+      label: formatRemainingTime(secondsRemaining)
+    });
+  }, 0.2);
 
   render() {
     const { secondsRemaining, label } = this.state;
