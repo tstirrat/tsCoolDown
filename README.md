@@ -1,6 +1,8 @@
 # tsCoolDown
 
-An experiment in TypeScript + React for rendering UIs. Based on the old addon wereHamster/coolDown, partly because I loved that Addon, and mostly because it's a simple and appropriate use case for React style declarative UI.
+An experiment in TypeScript + React for rendering UIs. Based on the old addon
+[wereHamster/coolDown](https://github.com/wereHamster/coolDown), partly because I loved that Addon,
+and mostly because it's a simple and appropriate use case for React style declarative UI.
 
 ## Building & running
 
