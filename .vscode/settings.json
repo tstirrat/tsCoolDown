@@ -1,3 +1,10 @@
 {
-  "typescript.tsdk": "node_modules\\typescript\\lib"
+  "typescript.tsdk": "node_modules\\typescript\\lib",
+  "[typescript]": {
+    "editor.defaultFormatter": "xaver.clang-format"
+  },
+  "cSpell.words": [
+    "BOTTOMLEFT",
+    "Cooldowns"
+  ]
 }
