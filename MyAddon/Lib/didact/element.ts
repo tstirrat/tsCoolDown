@@ -19,10 +19,10 @@ interface Props {
 export const TEXT_ELEMENT = 'TEXT ELEMENT';
 
 export function createElement(
-    type: string|Component, config: Props, ...args: ChildElement[]) {
-  const props = Object.assign({}, config);
-  const hasChildren = args.length > 0;
-  const rawChildren = hasChildren ? [...args] : [];
+    type: string|Component, config: Props, children?: ChildElement[]) {
+  const props: Props = {...config};
+  const hasChildren = children && children.length > 0;
+  const rawChildren = hasChildren ? [...children || []] : [];
   props.children =
       rawChildren
           .filter((c): c is InternalElement|string => c != null && c !== false)
