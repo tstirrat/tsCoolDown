@@ -2,44 +2,40 @@ import * as Didact from '../Lib/didact/didact';
 import { Icon } from './Icon';
 import { Bar } from './Bar';
 
-interface Props {
-  frameName: string;
+export interface Props {
+  name: string;
   start: number;
   duration: number;
   textures: string[];
 }
 
-const BAR_SIZE: JSX.Size = [80 + 32, 32];
+const ICON_SIZE = 32;
+const BAR_WIDTH = 80;
+const CONTAINER_SIZE: JSX.Size = [BAR_WIDTH + ICON_SIZE, ICON_SIZE];
 
 export class Cooldown extends Didact.Component<Props> {
   render() {
-    const { frameName, start, duration, textures } = this.props;
+    const { name, start, duration, textures } = this.props;
 
-    assert(frameName, 'frameName is required');
+    assert(name, 'frameName is required');
     assert(start, 'start is required');
     assert(duration, 'duration is required');
-    assert(textures && textures[1], 'at least one texture is required');
+    assert(textures && textures.length, 'at least one texture is required');
 
-    const containerFrame = frameName;
+    const containerFrame = name;
 
     const icons = textures.map((texture, i) => {
-      let anchor = containerFrame + 'Icon' + (i - 1);
-      if (i == 1) {
-        anchor = containerFrame;
-      }
-
       return (
         <Icon
           key={texture}
           texture={texture}
-          name={containerFrame + 'Icon' + i}
-          Points={['TOPRIGHT', anchor, 'TOPLEFT']}
+          Points={[['LEFT', containerFrame, 'LEFT', -(i * ICON_SIZE), 0]]}
         />
       );
     });
 
     return (
-      <frame name={containerFrame} Size={BAR_SIZE}>
+      <frame name={containerFrame} Size={CONTAINER_SIZE} Point="BOTTOMLEFT">
         <frame Point="LEFT">{icons}</frame>
         <Bar start={start} duration={duration} Point="RIGHT" />
       </frame>
