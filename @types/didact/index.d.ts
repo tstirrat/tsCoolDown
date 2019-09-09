@@ -4,10 +4,16 @@ declare namespace JSX {
        number]|[WowPoint, string, WowPoint]|[WowPoint, string]|[WowPoint];
 
   type Color4 = [number, number, number, number];
-  type Size = [number, number];
+  type Tuple<T = number> = [T, T];
+  type Size = Tuple;
   type Font = [string, number];
 
-  interface BaseFrameProps {
+  interface BaseProps {
+    key?: string;
+    children?: string;
+  }
+
+  interface BaseFrameProps extends BaseProps {
     name?: string;
     layer?: WowLayer;
     inheritsFrom?: string;
@@ -16,10 +22,22 @@ declare namespace JSX {
     Size?: Size;
     Points?: Point[];
     Point?: Point|WowPoint;
+    Backdrop?: WowBackdrop;
+    BackdropBorderColor?: Color4;
+    BackdropColor?: Color4;
+
+    OnUpdate?: (frame: WowFrame, secondsElapsed: number) => void;
   }
 
   interface LayeredRegionProps extends BaseFrameProps {
     VertexColor?: Color4;
+  }
+
+  interface StatusBarProps extends BaseFrameProps {
+    MinMaxValue?: Tuple;
+    Value?: number;
+    StatusBarTexture?: string;
+    StatusBarColor?: Color4;
   }
 
   interface TextureProps extends LayeredRegionProps {
@@ -32,6 +50,9 @@ declare namespace JSX {
 
   interface FontStringProps extends FontInstanceProps {
     Text?: string;
+    JustifyH?: WowHorizontalAlign;
+    JustifyV?: WowVerticalAlign;
+    TextColor?: Color4;
   }
 
   interface IntrinsicElements {
@@ -47,8 +68,8 @@ declare namespace JSX {
     'scroll-frame': BaseFrameProps;
     'scrolling-message-frame': BaseFrameProps;
     'simple-html': BaseFrameProps;
-    slider: BaseFrameProps;
-    'status-bar': BaseFrameProps;
+    slider: StatusBarProps;
+    'status-bar': StatusBarProps;
 
     // Other things
     'font-string': FontStringProps;
