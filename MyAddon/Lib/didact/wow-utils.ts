@@ -1,3 +1,5 @@
+type Props = Record<string, any>;
+
 export function createFrame(jsxType: string, name?: string,
                             parentFrame?: WowRegion,
                             inheritsFrom?: string): WowRegion {
@@ -36,13 +38,13 @@ const isStandardProperty = (name: string) =>
  * These properties must be set _before_ their other properties e.g. Background
  * must be set before BackgroundColor
  */
-const isOrderedProperty = (name: string) => !isEvent(name) && name !== 'Font' &&
-                                            name !== 'Background' &&
-                                            name !== 'Texture';
+const isOrderedProperty = (name: string) => name === 'Font' ||
+                                            name === 'Background' ||
+                                            name === 'Texture';
 
 export function updateFrameProperties(frame: WowRegion,
-                                      prevProps: Record<string, any>,
-                                      nextProps: Record<string, any>) {
+                                      prevProps: Props,
+                                      nextProps: Props) {
   updateFramePoints(frame, nextProps);
   updateFrameEvents(frame, prevProps, nextProps);
   updateOrderSpecificProperties(frame, prevProps, nextProps);
@@ -50,8 +52,8 @@ export function updateFrameProperties(frame: WowRegion,
 }
 
 function updateOrderSpecificProperties(frame: WowRegion,
-                                       prevProps: Record<string, any>,
-                                       nextProps: Record<string, any>) {
+                                       prevProps: Props,
+                                       nextProps: Props) {
   // Remove properties that are no longer specified
   Object.keys(prevProps)
       .filter(isOrderedProperty)
@@ -64,8 +66,8 @@ function updateOrderSpecificProperties(frame: WowRegion,
 }
 
 function updateRemainingProperties(frame: WowRegion,
-                                   prevProps: Record<string, any>,
-                                   nextProps: Record<string, any>) {
+                                   prevProps: Props,
+                                   nextProps: Props) {
   // Remove properties that are no longer specified
   Object.keys(prevProps)
       .filter(isStandardProperty)
@@ -77,8 +79,8 @@ function updateRemainingProperties(frame: WowRegion,
       .forEach(key => { attemptSetProperty(frame, key, nextProps[key]); });
 }
 
-function updateFrameEvents(frame: WowRegion, prevProps: Record<string, any>,
-                           nextProps: Record<string, any>) {
+function updateFrameEvents(frame: WowRegion, prevProps: Props,
+                           nextProps: Props) {
   Object.keys(prevProps)
       .filter(isEvent)
       .filter(key => !nextProps[key])
@@ -95,8 +97,12 @@ function updateFrameEvents(frame: WowRegion, prevProps: Record<string, any>,
 }
 
 /** Handle frame points, size to parent unless specified. */
-function updateFramePoints(frame: WowRegion, nextProps: Record<string, any>) {
+function updateFramePoints(frame: WowRegion, nextProps: Props) {
   frame.ClearAllPoints();
+  if (nextProps['Point']) {
+    frame.SetPoint(nextProps['Point']);
+    return;
+  }
   if (nextProps['Points']) {
     const points = (nextProps as JSX.BaseFrameProps).Points!;
     points.forEach(point => {
@@ -118,9 +124,16 @@ function updateFramePoints(frame: WowRegion, nextProps: Record<string, any>) {
 }
 
 function attemptSetProperty(frame: WowRegion, key: string, value: any) {
-  const setter = (frame as Record<string, any>)[`Set${key}`];
-  if (setter && typeof setter == 'function') {
-    setter(value);
+  const region = frame as any as Record<string, (v: any) => void>;
+  const setter = `Set${key}`;
+  const setterFn = region[setter];
+  if (setterFn && typeof setterFn == 'function') {
+    if (typeof value === 'string' || typeof value === 'number') {
+      region[setter](value);
+    } else {
+      console.log('calling with array elements as args:', (value as any[]).join(', '));
+      setterFn.apply(region, value);
+    }
   }
 }
 
