@@ -19,7 +19,7 @@ export function getRemainingTime(start: number, duration: number) {
 export function throttle(fn: CallableFunction, threshold: number) {
   assert(threshold, 'threshold is required');
   let t = 0;
-  return function (frame: WowFrame, elapsed: number) {
+  return function(frame: WowFrame, elapsed: number) {
     t = t + elapsed;
     if (t > threshold) {
       t = 0;

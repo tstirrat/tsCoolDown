@@ -7,7 +7,8 @@ export interface InternalElement {
   props: Props;
 }
 
-export type ChildElement = InternalElement[]|InternalElement|string|boolean|null;
+export type ChildElement =
+    InternalElement[]|InternalElement|string|boolean|null;
 
 interface Props {
   key?: string;

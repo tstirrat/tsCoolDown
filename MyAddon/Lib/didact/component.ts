@@ -12,7 +12,9 @@ export class Component<P = {}, S = {}> {
     updateInstance(this.__internalInstance);
   }
 
-  render(): InternalElement|null { throw 'render not implemented'; }
+  render(): InternalElement|null {
+    throw 'render not implemented';
+  }
 }
 
 function updateInstance(internalInstance: Instance) {

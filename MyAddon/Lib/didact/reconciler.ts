@@ -1,6 +1,6 @@
 import {Component} from './component';
 import {InternalElement, TEXT_ELEMENT} from './element';
-import {updateFrameProperties, createFrame, cleanupFrame} from './wow-utils';
+import {cleanupFrame, createFrame, updateFrameProperties} from './wow-utils';
 
 export interface Instance {
   publicInstance?: Component;
@@ -18,11 +18,13 @@ export function render(element: InternalElement, container: WowRegion) {
   rootInstance = nextInstance;
 }
 
-export function reconcile(parentFrame: WowRegion, instance: Instance|null,
-                          element: InternalElement|null): Instance|null {
+export function reconcile(
+    parentFrame: WowRegion, instance: Instance|null,
+    element: InternalElement|null): Instance|null {
   if (!instance) {
     // Create instance
-    return instantiate(assert(element, 'element should not be null'), parentFrame);
+    return instantiate(
+        assert(element, 'element should not be null'), parentFrame);
   } else if (!element) {
     // Remove instance
     cleanupFrame(instance.hostFrame);
@@ -34,8 +36,8 @@ export function reconcile(parentFrame: WowRegion, instance: Instance|null,
     return newInstance;
   } else if (typeof element.type === 'string') {
     // Update host element
-    updateFrameProperties(instance.hostFrame, instance.element.props,
-                          element.props);
+    updateFrameProperties(
+        instance.hostFrame, instance.element.props, element.props);
     instance.childInstances = reconcileChildren(instance, element);
     instance.element = element;
     return instance;
@@ -60,7 +62,8 @@ export function reconcile(parentFrame: WowRegion, instance: Instance|null,
   }
 }
 
-function reconcileChildren(instance: Instance, element: InternalElement): Instance[] {
+function reconcileChildren(
+    instance: Instance, element: InternalElement): Instance[] {
   const hostFrame = instance.hostFrame;
   const childInstances = instance.childInstances;
   const nextChildElements = element.props.children || [];
@@ -70,11 +73,12 @@ function reconcileChildren(instance: Instance, element: InternalElement): Instan
     return reconcile(hostFrame, childInstance, childElement);
   });
 
-  return newChildInstances.filter((instance): instance is Instance => instance != null);
+  return newChildInstances.filter(
+      (instance): instance is Instance => instance != null);
 }
 
-function instantiate(element: InternalElement,
-                     parentFrame: WowRegion): Instance {
+function instantiate(
+    element: InternalElement, parentFrame: WowRegion): Instance {
   const {type, props} = element;
 
   console.log('instantiate', type, Object.keys(props || {}).join(', '));
@@ -85,7 +89,8 @@ function instantiate(element: InternalElement,
     }
 
     // Instantiate host element
-    const frame = createFrame(type, props.name, parentFrame, props.inheritsFrom);
+    const frame =
+        createFrame(type, props.name, parentFrame, props.inheritsFrom);
 
     updateFrameProperties(frame, [], props);
 
@@ -94,10 +99,10 @@ function instantiate(element: InternalElement,
         childElements.map(child => instantiate(child, frame));
 
     const instance: Instance =
-        {hostFrame: frame, element, childInstances, childInstance : null};
+        {hostFrame: frame, element, childInstances, childInstance: null};
     return instance;
 
-  } else  {
+  } else {
     console.log('instantiate Component', Object.keys(element || {}).join(', '));
     // Instantiate component element
     const instance = {} as Instance;
@@ -113,8 +118,8 @@ function instantiate(element: InternalElement,
   }
 }
 
-function createPublicInstance(element: InternalElement,
-                              internalInstance: Instance) {
+function createPublicInstance(
+    element: InternalElement, internalInstance: Instance) {
   const {type: ComponentType, props} = element;
   if (!ComponentType) {
     throw 'Tried createPublicInstance() with undefined';
