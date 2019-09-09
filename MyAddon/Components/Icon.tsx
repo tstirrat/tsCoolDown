@@ -5,16 +5,14 @@ const SIZE: JSX.Size = [31, 31];
 
 export interface Props {
   texture: string;
-  name?: string;
   Points?: JSX.Point[];
+  key?: string; // TODO
 }
 
 export class Icon extends Didact.Component<Props, {}> {
   render() {
     const { texture, Points } = this.props;
-
     assert(texture, 'texture is required');
-    // assert(props.name, 'name is required');
 
     return (
       <frame name={name} Size={SIZE} Points={Points}>
