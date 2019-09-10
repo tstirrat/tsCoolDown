@@ -25,12 +25,12 @@ export class Cooldown extends Didact.Component<Props> {
 
     return (
       <frame Size={CONTAINER_SIZE} Point={Point}>
-        <frame Point="LEFT">
+        <frame Point="LEFT" Width={ICON_SIZE} Height={ICON_SIZE}>
           {textures.map((texture, i) => (
             <Icon
               key={texture}
               texture={texture}
-              Point={P('LEFT', 'RIGHT', -(i * ICON_SIZE), 0)}
+              Point={P('LEFT', 'LEFT', -(i * ICON_SIZE))}
             />
           ))}
         </frame>

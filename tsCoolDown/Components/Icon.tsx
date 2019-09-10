@@ -5,7 +5,7 @@ const SIZE: JSX.Size = [31, 31];
 
 export interface Props {
   texture: string;
-  Point: JSX.PointDefinition;
+  Point: JSX.Point;
   key?: string;
 }
 
