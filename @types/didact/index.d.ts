@@ -40,7 +40,7 @@ declare namespace JSX {
   }
 
   interface StatusBarProps extends BaseFrameProps {
-    MinMaxValue?: Tuple;
+    MinMaxValues?: Tuple;
     Value?: number;
     StatusBarTexture?: string;
     StatusBarColor?: Color4;

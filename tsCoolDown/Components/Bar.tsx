@@ -9,7 +9,10 @@ const BACKDROP: WowBackdrop = {
   edgeSize: 12,
   insets: { left: 2, right: 2, top: 2, bottom: 2 }
 };
-const FONT: JSX.Font = ['Fonts\\FRIZQT__.TTF', 22];
+const FONT: JSX.Font = [
+  'Interface\\AddOns\\tsCoolDown\\Fonts\\coolDownFont.ttf',
+  22
+];
 const COLOR_BLACK: JSX.Color4 = [0, 0, 0, 1];
 const TEXT_COLOR: JSX.Color4 = [1, 0.82, 0, 1];
 const BAR_COLOR: JSX.Color4 = [0.4, 0.4, 0.95, 1];
@@ -49,6 +52,8 @@ export class Bar extends Didact.Component<Props, State> {
     });
   }, 0.2);
 
+  private readonly minMaxValues: JSX.Tuple = [0, this.props.duration];
+
   render() {
     const { secondsRemaining, label } = this.state;
     const { Point } = this.props;
@@ -60,13 +65,14 @@ export class Bar extends Didact.Component<Props, State> {
         BackdropBorderColor={COLOR_BLACK}
         BackdropColor={COLOR_BLACK}
         Point={Point}
+        OnUpdate={this.onUpdate}
       >
         <status-bar
-          MinMaxValue={[0, this.props.duration] as JSX.Tuple}
+          MinMaxValues={this.minMaxValues}
           Value={secondsRemaining}
           Point="CENTER"
           Size={BAR_SIZE}
-          StatusBarTexture="Interface\\AddOns\\tsCoolDown\\Textures\\Smooth"
+          StatusBarTexture="Interface\AddOns\tsCoolDown\Textures\Smooth"
           StatusBarColor={BAR_COLOR}
         >
           <font-string
