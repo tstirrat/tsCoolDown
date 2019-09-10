@@ -32,7 +32,8 @@ export function cleanupFrame(frame: WowRegion) {
 
 const isEvent = (name: string) => name.startsWith('On');
 const isStandardProperty = (name: string) => !isEvent(name) &&
-    !isOrderedProperty(name) && name !== 'children' && name !== 'Points';
+    !isOrderedProperty(name) && name !== 'children' && name !== 'Points' && name !== 'Point' &&
+    name !== 'name' && name !== 'layer' && name !== 'inheritsFrom';
 
 /**
  * These properties must be set _before_ their other properties e.g. Background
@@ -131,6 +132,7 @@ function setPoint(frame: WowRegion, pointDef: JSX.Point) {
   } else {
     const {point, relativePoint, relativeFrame, x, y} = pointDef;
     const relativeTo = relativePoint || point;
+    // console.log('setPoint', Object.keys(pointDef).join(', '));
     if (relativeFrame) {
       frame.SetPoint(point, relativeFrame, relativeTo, x || 0, y || 0);
     } else {
@@ -151,9 +153,8 @@ function attemptSetProperty(frame: WowRegion, key: string, value: any) {
         isTableValue(key)) {
       region[setter](value);
     } else {
-      console.log(
-          `calling ${setter} with array elements as args:`,
-          (value as any[]).join(', '));
+      // console.log( `calling ${setter} with array elements as args:`,
+          // (value as any[]).join(', '));
       setterFn.apply(region, value);
     }
   }
