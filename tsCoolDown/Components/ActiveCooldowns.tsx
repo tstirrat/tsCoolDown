@@ -14,20 +14,21 @@ interface State {
 
 const BAR_HEIGHT = 32;
 const CONTAINER_NAME = 'tsCoolDown_ActiveCooldowns_Container';
+const COOLDOWN_SIZE: JSX.Size = [80, BAR_HEIGHT];
 
 const FAKE_COOLDOWNS = [
   {
+    start: GetTime(),
+    duration: 60 * 1,
     textures: [
       'Interface\\Icons\\INV_Potion_54',
       'Interface\\Icons\\INV_Potion_76'
-    ],
-    start: GetTime(),
-    duration: 60 * 1
+    ]
   },
   {
-    textures: ['Interface\\Icons\\INV_Potion_76'],
     start: GetTime() - 12,
-    duration: 60 * 2
+    duration: 60 * 2,
+    textures: ['Interface\\Icons\\INV_Potion_76']
   }
 ];
 
@@ -40,7 +41,7 @@ export class ActiveCooldowns extends Didact.Component<{}, State> {
     const { cooldowns } = this.state;
 
     return (
-      <frame name={CONTAINER_NAME} Point="BOTTOMLEFT" Width={80} Height={32}>
+      <frame name={CONTAINER_NAME} Point="BOTTOMLEFT" Size={COOLDOWN_SIZE}>
         {cooldowns.map((timer, i) => (
           <Cooldown
             key={timer.textures[0]}
