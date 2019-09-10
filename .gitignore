@@ -4,3 +4,4 @@
 build/dist/
 **/*.js.map
 !gulpfile.js
+!RequireStub.lua
