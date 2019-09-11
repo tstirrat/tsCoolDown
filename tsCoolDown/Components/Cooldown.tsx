@@ -6,9 +6,8 @@ import { P } from '../Lib/didact/wow-utils';
 export interface Props {
   start: number;
   duration: number;
-  textures: string[];
-  key?: string;
-  Point: JSX.PointDefinition;
+  textures: WowTexturePath[];
+  Point: JSX.Point;
 }
 
 const ICON_SIZE = 32;
@@ -27,11 +26,7 @@ export class Cooldown extends Didact.Component<Props> {
       <frame Size={CONTAINER_SIZE} Point={Point}>
         <frame Point="LEFT" Width={ICON_SIZE} Height={ICON_SIZE}>
           {textures.map((texture, i) => (
-            <Icon
-              key={texture}
-              texture={texture}
-              Point={P('LEFT', 'LEFT', -(i * ICON_SIZE))}
-            />
+            <Icon texture={texture} Point={P('LEFT', -(i * ICON_SIZE))} />
           ))}
         </frame>
         <Bar start={start} duration={duration} Point="RIGHT" />
