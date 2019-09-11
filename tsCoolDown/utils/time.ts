@@ -23,7 +23,8 @@ export function throttle(fn: CallableFunction, threshold: number) {
     elapsed +=  frameTime;
     if (elapsed > threshold) {
       elapsed = 0;
-      fn(frame, frameTime);
+      return fn(frame, frameTime);
     }
+    return false;
   };
 }
