@@ -24,13 +24,21 @@ const preDiagnostics = ts.getPreEmitDiagnostics(program);
 
 if (preDiagnostics.length) {
   console.warn(preDiagnostics.map(
-      d => `${d.file ? d.file.fileName : d.category} ${d.messageText}`));
+      d => log(d)));
 }
 
 const result = tstl.transpile({program, transformer, printer});
 
 result.diagnostics.length &&
-    console.warn(result.diagnostics.map(d => d.messageText));
+    console.warn(result.diagnostics.map(d => log(d)));
 
 const emitResult = tstl.emitTranspiledFiles(options, result.transpiledFiles);
 emitResult.forEach(({name, text}) => ts.sys.writeFile(name, text));
+
+function log(d: ts.Diagnostic) {
+  // return d;
+  if (d.file) {
+    return `${d.file.fileName}: ${d.messageText}`;
+  }
+  return `${d.messageText}`;
+}
