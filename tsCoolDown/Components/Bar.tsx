@@ -46,10 +46,13 @@ export class Bar extends Didact.Component<Props, State> {
   private readonly onUpdate = throttle(() => {
     const { start, duration } = this.props;
     const secondsRemaining = getRemainingTime(start, duration);
-    this.setState({
-      secondsRemaining,
-      label: formatRemainingTime(secondsRemaining)
-    });
+    const label = formatRemainingTime(secondsRemaining);
+    if (this.state.label !== label) {
+      this.setState({
+        secondsRemaining,
+        label
+      });
+    }
   }, 0.2);
 
   private readonly minMaxValues: JSX.Tuple = [0, this.props.duration];
