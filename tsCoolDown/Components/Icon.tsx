@@ -4,9 +4,8 @@ const COLOR_BLACK: JSX.Color4 = [0, 0, 0, 1];
 const SIZE: JSX.Size = [31, 31];
 
 export interface Props {
-  texture: string;
+  texture: WowTexturePath;
   Point: JSX.Point;
-  key?: string;
 }
 
 export class Icon extends Didact.Component<Props, {}> {
@@ -22,13 +21,7 @@ export class Icon extends Didact.Component<Props, {}> {
           Point="CENTER"
           VertexColor={COLOR_BLACK}
         />
-        <texture
-          layer="ARTWORK"
-          Texture={texture}
-          Width={29}
-          Height={29}
-          Point="CENTER"
-        />
+        <texture Texture={texture} Width={29} Height={29} Point="CENTER" />
       </frame>
     );
   }
