@@ -47,7 +47,7 @@ declare namespace JSX {
   }
 
   interface TextureProps extends LayeredRegionProps {
-    Texture?: string;
+    Texture?: WowTexturePath;
   }
 
   interface FontInstanceProps extends LayeredRegionProps {
