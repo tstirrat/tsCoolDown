@@ -21,10 +21,12 @@ export function createFrame(
   if (parentFrame) {
     frame.SetParent(parentFrame);
   }
+  // console.log('created frame:', frameType);
   return frame;
 }
 
 export function cleanupFrame(frame: WowRegion) {
+  // console.log('cleaning up frame');
   frame.Hide();
   frame.ClearAllPoints();
   frame.SetParent(null);
@@ -60,8 +62,7 @@ function updateOrderSpecificProperties(
     frame: WowRegion, prevProps: Props, nextProps: Props) {
   // Remove properties that are no longer specified
   Object.keys(prevProps)
-      .filter(isOrderedProperty)
-      .filter(key => !nextProps[key])
+      .filter(key => isOrderedProperty(key) && !nextProps[key])
       .forEach(key => {
         attemptSetProperty(frame, key, null);
       });
@@ -75,8 +76,7 @@ function updateRemainingProperties(
     frame: WowRegion, prevProps: Props, nextProps: Props) {
   // Remove properties that are no longer specified
   Object.keys(prevProps)
-      .filter(isStandardProperty)
-      .filter(key => !nextProps[key])
+      .filter(key => isStandardProperty(key) && !nextProps[key])
       .forEach(key => {
         attemptSetProperty(frame, key, null);
       });
@@ -88,17 +88,18 @@ function updateRemainingProperties(
 
 function updateFrameEvents(
     frame: WowRegion, prevProps: Props, nextProps: Props) {
+  // Detach removed event listeners
   Object.keys(prevProps)
-      .filter(isEvent)
-      .filter(key => !nextProps[key])
+      .filter(key => isEvent(key) && !nextProps[key])
       .forEach(event => {
         (frame as WowFrame).SetScript(event as WowEventOnAny, null);
       });
-  // Add event listeners
+
+  // Add new event listeners
   Object.keys(nextProps)
-      .filter(isEvent)
-      .filter(key => prevProps[key] !== nextProps[key])
+      .filter(key => isEvent(key) && prevProps[key] !== nextProps[key])
       .forEach(event => {
+        console.log('attaching event', event);
         (frame as WowFrame).SetScript(event as WowEventOnAny, nextProps[event]);
       });
 }
@@ -121,8 +122,9 @@ function updateFramePoints(frame: WowRegion, nextProps: JSX.BaseFrameProps) {
 
 /** Create a point declaration */
 export function P(
-    point: WowPoint, relativePoint?: WowPoint, x?: number, y?: number,
+    point: WowPoint, x?: number, y?: number, relativePoint?: WowPoint,
     relativeFrame?: WowRegion): JSX.PointDefinition {
+  // TODO: memoize for perf
   return {point, relativePoint, relativeFrame, x, y};
 }
 
