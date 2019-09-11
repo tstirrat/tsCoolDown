@@ -1,11 +1,12 @@
 import * as Didact from '../Lib/didact/didact';
 import { Cooldown } from './Cooldown';
 import { P } from '../Lib/didact/wow-utils';
+import { subscribe } from '../utils/cooldowns';
 
 interface Timer {
   start: number;
   duration: number;
-  textures: string[];
+  textures: WowTexturePath[];
 }
 
 interface State {
@@ -16,7 +17,7 @@ const BAR_HEIGHT = 32;
 const CONTAINER_NAME = 'tsCoolDown_ActiveCooldowns_Container';
 const COOLDOWN_SIZE: JSX.Size = [80, BAR_HEIGHT];
 
-const FAKE_COOLDOWNS = [
+const FAKE_COOLDOWNS: Timer[] = [
   {
     start: GetTime(),
     duration: 60 * 1,
@@ -33,9 +34,17 @@ const FAKE_COOLDOWNS = [
 ];
 
 export class ActiveCooldowns extends Didact.Component<{}, State> {
-  readonly state: State = {
-    cooldowns: FAKE_COOLDOWNS
-  };
+  state: State = { cooldowns: [] };
+
+  constructor(props: {}) {
+    super(props);
+
+    subscribe(cooldowns => {
+      assert(cooldowns, 'ActiveCooldowns: timers should exist');
+      console.log('got new cooldowns', cooldowns.length);
+      this.setState({ cooldowns });
+    });
+  }
 
   render() {
     const { cooldowns } = this.state;
@@ -44,8 +53,7 @@ export class ActiveCooldowns extends Didact.Component<{}, State> {
       <frame name={CONTAINER_NAME} Point="BOTTOMLEFT" Size={COOLDOWN_SIZE}>
         {cooldowns.map((timer, i) => (
           <Cooldown
-            key={timer.textures[0]}
-            Point={P('BOTTOMLEFT', undefined, 0, -(i * BAR_HEIGHT))}
+            Point={P('BOTTOMLEFT', 0, -(i * BAR_HEIGHT))}
             start={timer.start}
             duration={timer.duration}
             textures={timer.textures}
