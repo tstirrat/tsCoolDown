@@ -99,7 +99,7 @@ function updateFrameEvents(
   Object.keys(nextProps)
       .filter(key => isEvent(key) && prevProps[key] !== nextProps[key])
       .forEach(event => {
-        console.log('attaching event', event);
+        // console.log('attaching event', event);
         (frame as WowFrame).SetScript(event as WowEventOnAny, nextProps[event]);
       });
 }
