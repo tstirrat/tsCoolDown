@@ -11,7 +11,7 @@ const options: tstl.CompilerOptions = {
   jsxFactory: 'Didact.createElement',
   rootDir: './tsCoolDown',
   outDir: './tsCoolDown/build',
-  typeRoots: ['@types', 'node_modules/@types'],
+  typeRoots: ['@types', 'node_modules/@types', 'node_modules/@wartoshika'],
   luaTarget: tstl.LuaTarget.Lua51,
   luaLibImport: tstl.LuaLibImportKind.Require,
 };
