@@ -41,19 +41,20 @@ export class ActiveCooldowns extends Didact.Component<{}, State> {
 
     subscribe(cooldowns => {
       assert(cooldowns, 'ActiveCooldowns: timers should exist');
-      console.log('got new cooldowns', cooldowns.length);
+      // console.log('got new cooldowns', cooldowns.length);
       this.setState({ cooldowns });
     });
   }
 
   render() {
     const { cooldowns } = this.state;
+    // const cooldowns = FAKE_COOLDOWNS.concat(this.state.cooldowns);
 
     return (
       <frame name={CONTAINER_NAME} Point="BOTTOMLEFT" Size={COOLDOWN_SIZE}>
         {cooldowns.map((timer, i) => (
           <Cooldown
-            Point={P('BOTTOMLEFT', 0, -(i * BAR_HEIGHT))}
+            Point={P('BOTTOMLEFT', 0, i * BAR_HEIGHT)}
             start={timer.start}
             duration={timer.duration}
             textures={timer.textures}
