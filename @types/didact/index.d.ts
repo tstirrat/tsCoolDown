@@ -1,3 +1,5 @@
+/** @noSelfInFile */
+
 declare function assert<T>(assertion: T|undefined|null, message?: string): T;
 
 declare namespace JSX {
