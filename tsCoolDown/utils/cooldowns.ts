@@ -14,7 +14,7 @@ export interface Timer {
   start: number;
   duration: number;
   textures: WowTexturePath[];
-  expired: number;
+  end: number;
 }
 
 const timers: Timer[] = [];
@@ -26,7 +26,7 @@ function insert(
   texture: WowTexturePath
 ) {
   // console.log('insert', type, start, texture);
-  const expired = start + duration;
+  const end = start + duration;
   const timerIndex = timers.findIndex(
     timer =>
       timer.type === type &&
@@ -41,11 +41,15 @@ function insert(
       start,
       duration,
       textures: [texture],
-      expired
+      end,
     };
-    const i = timers.findIndex(timer => timer.expired > expired);
+    const nextExpiringIndex = timers.findIndex(timer => timer.end > end);
     // console.log('insert index', i + 1);
-    timers.splice(i + 1, 0, newTimer);
+    if (nextExpiringIndex === -1) {
+      timers.push(newTimer);
+    } else {
+      timers.splice(nextExpiringIndex, 0, newTimer);
+    }
     // console.log('new timer', stringify(newTimer));
     return true;
   }
@@ -65,8 +69,10 @@ function removeExpired() {
   const now = GetTime();
   let didRemove = false;
 
-  if (timers.length) {
-    while (timers[0] && timers[0].expired <= now) {
+  if (timers.length && timers[0]) {
+    // console.log(now);
+    // console.log('[ ' + timers.map(t => t.end).join(', ') + ' ]');
+    while (timers[0] && timers[0].end <= now) {
       timers.shift();
       didRemove = true;
     }
@@ -199,13 +205,12 @@ function determineScanLocations(_: WowFrame, event: WowEvent) {
 
 const doScans = throttle(function doScans_inner() {
   let didScan = false;
-  let didRemove = false;
   toDo.forEach(scan => {
     didScan = true;
     scan();
   });
   toDo = [];
-  didRemove = removeExpired();
+  const didRemove = removeExpired();
   return didScan || didRemove;
 }, 0.2);
 
