@@ -25,7 +25,6 @@ declare namespace JSX {
 
   interface BaseFrameProps extends BaseProps {
     name?: string;
-    layer?: WowLayer;
     inheritsFrom?: string;
     Width?: number;
     Height?: number;
@@ -41,6 +40,7 @@ declare namespace JSX {
 
   interface LayeredRegionProps extends BaseFrameProps {
     VertexColor?: Color4;
+    DrawLayer?: WowLayer | [WowLayer, number];
   }
 
   interface StatusBarProps extends BaseFrameProps {

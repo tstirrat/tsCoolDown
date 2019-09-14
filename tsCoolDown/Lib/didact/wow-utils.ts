@@ -1,41 +1,74 @@
+import { InternalElement } from "./element";
+
 type Props = Record<string, any>;
 
+const frameCache: Record<string, WowRegion[]> = {
+};
+
+function getCache(type: string): WowRegion|undefined {
+  // if (frameCache[type]) {
+  //   return frameCache[type].length ? frameCache[type].pop() : undefined;
+  // }
+  return undefined;
+}
+
+function setCache(frame: WowRegion) {
+  const type = frame.GetObjectType();
+  console.log('store cache', type);
+  if (frameCache[type] && frameCache[type].length) {
+    frameCache[type].push(frame);
+  } else {
+    frameCache[type] = [frame];
+  }
+}
+
 export function createFrame(
-    jsxType: string, name?: string, parentFrame?: WowRegion,
-    inheritsFrom?: string): WowRegion {
+    jsxType: string, parentFrame: WowRegion,
+    props: Props): WowRegion {
   const frameType = pascalCase(jsxType);
 
-  if (frameType === 'FontString') {
-    return (parentFrame as WowFrame)
-        .CreateFontString(name, 'ARTWORK', inheritsFrom);
-  }
+  let frame = getCache(frameType);
 
-  if (frameType === 'Texture') {
-    return (parentFrame as WowFrame)
-        .CreateTexture(name, 'ARTWORK', inheritsFrom);
-  }
-
-  const frame =
-      CreateFrame(frameType as WowFrameType, name, undefined, inheritsFrom) as
-      WowFrame;
-  if (parentFrame) {
+  if (frame) {
+    console.log('got frame from cache', frameType, frame, 'parent:', parentFrame);
     frame.SetParent(parentFrame);
+    frame.Show();
+    return frame;
   }
-  // console.log('created frame:', frameType);
+
+  if (frameType === 'FontString') {
+    frame = (parentFrame as WowFrame)
+        .CreateFontString(name, props.DrawLayer || 'ARTWORK', props.inheritsFrom);
+  } else if (frameType === 'Texture') {
+    frame = (parentFrame as WowFrame)
+        .CreateTexture(name, props.DrawLayer || 'ARTWORK', props.inheritsFrom);
+  } else {
+    frame =
+        CreateFrame(frameType as WowFrameType, name, parentFrame, props.inheritsFrom) as
+        WowFrame;
+  }
+  // frame.SetParent(parentFrame);
+  console.log('created frame:', frameType);
   return frame;
 }
 
 export function cleanupFrame(frame: WowRegion) {
-  // console.log('cleaning up frame');
+  console.log('cleaning up frame', frame.GetObjectType(), frame);
   frame.Hide();
   frame.ClearAllPoints();
-  frame.SetParent(null);
+  if (frame.GetObjectType() as string === 'Texture' ||
+      frame.GetObjectType() as string === 'FontString') {
+    frame.SetParent(UIParent);
+  } else {
+    frame.SetParent(null);
+  }
+  setCache(frame);
 }
 
 const isEvent = (name: string) => name.startsWith('On');
 const isStandardProperty = (name: string) => !isEvent(name) &&
     !isOrderedProperty(name) && name !== 'children' && name !== 'Points' && name !== 'Point' &&
-    name !== 'name' && name !== 'layer' && name !== 'inheritsFrom';
+    name !== 'name' && name !== 'DrawLayer' && name !== 'inheritsFrom';
 
 /**
  * These properties must be set _before_ their other properties e.g. Background
@@ -53,6 +86,7 @@ const isTableValue = (name: string) => name === 'Backdrop';
 export function updateFrameProperties(
     frame: WowRegion, prevProps: Props, nextProps: Props) {
   updateFramePoints(frame, nextProps);
+  updateFrameLayer(frame, nextProps);
   updateFrameEvents(frame, prevProps, nextProps);
   updateOrderSpecificProperties(frame, prevProps, nextProps);
   updateRemainingProperties(frame, prevProps, nextProps);
@@ -118,6 +152,23 @@ function updateFramePoints(frame: WowRegion, nextProps: JSX.BaseFrameProps) {
     // Fill to parent
     frame.SetAllPoints();
   }
+}
+
+/** Handle frame points, size to parent unless specified. */
+function updateFrameLayer(frame: WowRegion, nextProps: JSX.LayeredRegionProps) {
+  const region = frame as WowLayeredRegion;
+  const layer = nextProps.DrawLayer;
+
+  if (!layer || typeof region.SetDrawLayer !== 'function') {
+    return;
+  }
+
+  if (typeof layer === 'string') {
+    region.SetDrawLayer(layer, 0);
+    return;
+  }
+
+  region.SetDrawLayer(layer[0] as WowLayer, layer[1]);
 }
 
 /** Create a point declaration */

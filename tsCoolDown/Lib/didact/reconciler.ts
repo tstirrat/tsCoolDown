@@ -28,12 +28,12 @@ export function reconcile(
         assert(element, 'element should not be null'), parentFrame);
   } else if (!element) {
     // Remove instance
-    cleanupFrame(instance.hostFrame);
+    cleanupFrames(instance);
     return null;
   } else if (instance.element.type !== element.type) {
     // Replace instance
     const newInstance = instantiate(element, parentFrame);
-    cleanupFrame(instance.hostFrame);
+    cleanupFrames(instance);
     return newInstance;
   } else if (typeof element.type === 'string') {
     // Update host element
@@ -64,6 +64,17 @@ export function reconcile(
   }
 }
 
+function cleanupFrames(instance: Instance) {
+  // TODO: composite objects need special cleanup, this should be part of reconcile
+  if (instance.childInstances) {
+    instance.childInstances.forEach(child => child && cleanupFrames(child));
+  }
+  if (instance.childInstance) {
+    cleanupFrames(instance.childInstance);
+  }
+  cleanupFrame(instance.hostFrame);
+}
+
 function reconcileChildren(instance: Instance, element: InternalElement) {
   const hostFrame = instance.hostFrame;
   const childInstances = instance.childInstances;
@@ -90,10 +101,9 @@ function instantiate(
     // console.log('instantiate', type, stringify(props));
 
     // Instantiate host element
-    const frame =
-        createFrame(type, props.name, parentFrame, props.inheritsFrom);
+    const frame = createFrame(type, parentFrame, props);
 
-    updateFrameProperties(frame, [], props);
+    updateFrameProperties(frame, {}, props);
 
     const childElements = props.children || [];
     const childInstances =
