@@ -4,8 +4,8 @@
   "description": "tsCoolDown - React + WoW POC based on wereHamster/coolDown",
   "main": "tsCoolDown/tsCoolDown.ts",
   "scripts": {
-    "build": "ts-node ./build/build.ts",
-    "watch": "gulp watch",
+    "build": "tstl",
+    "watch": "tstl --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -16,6 +16,6 @@
     "gulp": "^4.0.2",
     "ts-node": "^8.3.0",
     "typescript": "^3.5.3",
-    "typescript-to-lua": "^0.27.1"
+    "typescript-to-lua": "github:tstirrat/TypeScriptToLua#wow-temp-mod"
   }
 }

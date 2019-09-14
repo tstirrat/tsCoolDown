@@ -126,7 +126,7 @@ function updateFrameEvents(
   Object.keys(prevProps)
       .filter(key => isEvent(key) && !nextProps[key])
       .forEach(event => {
-        (frame as WowFrame).SetScript(event as WowEventOnAny, null);
+        (frame as WowFrame).SetScript(event as WowEventOnAny, undefined);
       });
 
   // Add new event listeners
