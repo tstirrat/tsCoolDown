@@ -16,7 +16,7 @@ export class Icon extends Didact.Component<Props, {}> {
     return (
       <frame Size={SIZE} Point={Point}>
         <texture
-          layer="OVERLAY"
+          DrawLayer="OVERLAY"
           Texture="Interface\Buttons\UI-Debuff-Border"
           Point="CENTER"
           VertexColor={COLOR_BLACK}

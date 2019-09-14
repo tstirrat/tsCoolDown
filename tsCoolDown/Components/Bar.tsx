@@ -77,7 +77,7 @@ export class Bar extends Didact.Component<Props, State> {
         >
           <font-string
             Text={label}
-            layer="OVERLAY"
+            DrawLayer="OVERLAY"
             Font={FONT}
             Point="CENTER"
             JustifyH="CENTER"
