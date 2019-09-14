@@ -8,10 +8,7 @@
     "moduleResolution": "node",
     "rootDir": "tsCoolDown",
     "outDir": "./dist",
-    "typeRoots": [
-      "node_modules/@types",
-      "node_modules/@wartoshika/wow-declarations"
-    ]
+    "typeRoots": ["node_modules/@wartoshika"]
   },
   "exclude": ["build/"],
   "tstl": {
