@@ -18,15 +18,15 @@ interface State {
 
 const CONTAINER_NAME = 'tsCoolDown_ActiveCooldowns_Container';
 
+const hasPositionConfig = () => tsCoolDown_Db.x !== undefined;
+
 export class ActiveCooldowns extends Didact.Component<{}, State> {
-  state: State = { cooldowns: [], isInConfigMode: false };
+  state: State = { cooldowns: [], isInConfigMode: !hasPositionConfig() };
 
   constructor(props: {}) {
     super(props);
 
     subscribe(cooldowns => {
-      assert(cooldowns, 'ActiveCooldowns: timers should exist');
-      // console.log('got new cooldowns', cooldowns.length);
       this.setState({ cooldowns });
     });
   }
@@ -41,6 +41,7 @@ export class ActiveCooldowns extends Didact.Component<{}, State> {
             label="Main"
             Point="BOTTOMLEFT"
             onMoved={this.onMoved}
+            onClick={this.onClick}
             Size={COOLDOWN_FULL_SIZE}
           />
         )}
@@ -67,6 +68,8 @@ export class ActiveCooldowns extends Didact.Component<{}, State> {
   };
 
   private readonly onMoved = (frame: WowFrame) => {
-    console.log('onMoved', frame.GetPoint(1));
+    const [, , , x, y] = frame.GetPoint(1);
+    tsCoolDown_Db.x = x;
+    tsCoolDown_Db.y = y;
   };
 }
