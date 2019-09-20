@@ -19,6 +19,7 @@ build/utils/debug.lua
 build/utils/cooldowns.lua
 build/utils/time.lua
 
+build/Components/config/ConfigAnchor.lua
 build/Components/ActiveCooldowns.lua
 build/Components/Bar.lua
 build/Components/Cooldown.lua
