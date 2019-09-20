@@ -4,4 +4,5 @@
 build/dist/
 **/*.js.map
 !gulpfile.js
+!tsCoolDown/Lib/**/*.lua
 !RequireStub.lua

@@ -3,7 +3,9 @@
 ## Title: </> tsCoolDown
 ## Notes: React + TypeScript + WoW PoC
 ## Author: tstirrat, wereHamster/asmdel
+## SavedVariables: tsCoolDown_Db
 
+embeds.xml
 RequireStub.lua
 
 build/lualib_bundle.lua
