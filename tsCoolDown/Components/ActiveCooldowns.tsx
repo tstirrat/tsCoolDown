@@ -2,6 +2,8 @@ import * as Didact from '../Lib/didact/didact';
 import { Cooldown } from './Cooldown';
 import { P } from '../Lib/didact/wow-utils';
 import { subscribe } from '../utils/cooldowns';
+import { ConfigAnchor } from './config/ConfigAnchor';
+import { COOLDOWN_FULL_SIZE, BAR_HEIGHT } from '../utils/constants';
 
 interface Timer {
   start: number;
@@ -11,30 +13,13 @@ interface Timer {
 
 interface State {
   cooldowns: Timer[];
+  isInConfigMode?: boolean;
 }
 
-const BAR_HEIGHT = 32;
 const CONTAINER_NAME = 'tsCoolDown_ActiveCooldowns_Container';
-const COOLDOWN_SIZE: JSX.Size = [80, BAR_HEIGHT];
-
-const FAKE_COOLDOWNS: Timer[] = [
-  {
-    start: GetTime(),
-    duration: 60 * 1,
-    textures: [
-      'Interface\\Icons\\INV_Potion_54',
-      'Interface\\Icons\\INV_Potion_76'
-    ]
-  },
-  {
-    start: GetTime() - 12,
-    duration: 60 * 2,
-    textures: ['Interface\\Icons\\INV_Potion_76']
-  }
-];
 
 export class ActiveCooldowns extends Didact.Component<{}, State> {
-  state: State = { cooldowns: [] };
+  state: State = { cooldowns: [], isInConfigMode: false };
 
   constructor(props: {}) {
     super(props);
@@ -47,11 +32,18 @@ export class ActiveCooldowns extends Didact.Component<{}, State> {
   }
 
   render() {
-    const { cooldowns } = this.state;
-    // const cooldowns = FAKE_COOLDOWNS.concat(this.state.cooldowns);
+    const { cooldowns, isInConfigMode } = this.state;
 
     return (
-      <frame name={CONTAINER_NAME} Point="BOTTOMLEFT" Size={COOLDOWN_SIZE}>
+      <frame name={CONTAINER_NAME} Point="BOTTOMLEFT" Size={COOLDOWN_FULL_SIZE}>
+        {isInConfigMode && (
+          <ConfigAnchor
+            label="Main"
+            Point="BOTTOMLEFT"
+            onMoved={this.onMoved}
+            Size={COOLDOWN_FULL_SIZE}
+          />
+        )}
         {cooldowns.map((timer, i) => (
           <Cooldown
             Point={P('BOTTOMLEFT', 0, i * BAR_HEIGHT)}
@@ -63,4 +55,18 @@ export class ActiveCooldowns extends Didact.Component<{}, State> {
       </frame>
     );
   }
+
+  /** Toggle config mode */
+  private readonly onClick = (
+    frame: WowFrame,
+    button: WowMouseButton,
+    down: boolean
+  ) => {
+    console.log('OnClick', frame, button, down);
+    this.setState({ isInConfigMode: !this.state.isInConfigMode });
+  };
+
+  private readonly onMoved = (frame: WowFrame) => {
+    console.log('onMoved', frame.GetPoint(1));
+  };
 }
