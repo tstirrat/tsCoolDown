@@ -14,6 +14,7 @@ build/Lib/didact/wow-utils.lua
 
 build/Lib/didact/didact.lua
 
+build/utils/constants.lua
 build/utils/debug.lua
 build/utils/cooldowns.lua
 build/utils/time.lua

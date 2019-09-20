@@ -2,6 +2,7 @@ import * as Didact from '../Lib/didact/didact';
 import { Icon } from './Icon';
 import { Bar } from './Bar';
 import { P } from '../Lib/didact/wow-utils';
+import { ICON_SIZE, COOLDOWN_FULL_SIZE } from '../utils/constants';
 
 export interface Props {
   start: number;
@@ -9,10 +10,6 @@ export interface Props {
   textures: WowTexturePath[];
   Point: JSX.Point;
 }
-
-const ICON_SIZE = 32;
-const BAR_WIDTH = 80;
-const CONTAINER_SIZE: JSX.Size = [BAR_WIDTH + ICON_SIZE, ICON_SIZE];
 
 export class Cooldown extends Didact.Component<Props> {
   render() {
@@ -23,7 +20,7 @@ export class Cooldown extends Didact.Component<Props> {
     assert(textures && textures.length, 'at least one texture is required');
 
     return (
-      <frame Size={CONTAINER_SIZE} Point={Point}>
+      <frame Size={COOLDOWN_FULL_SIZE} Point={Point}>
         <frame Point="LEFT" Width={ICON_SIZE} Height={ICON_SIZE}>
           {textures.map((texture, i) => (
             <Icon texture={texture} Point={P('LEFT', -(i * ICON_SIZE))} />

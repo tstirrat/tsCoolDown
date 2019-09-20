@@ -1,23 +1,15 @@
 import * as Didact from '../Lib/didact/didact';
 import { throttle, getRemainingTime, formatRemainingTime } from '../utils/time';
+import {
+  BACKDROP,
+  COLOR_BLACK,
+  COOLDOWN_FONT,
+  BAR_SIZE
+} from '../utils/constants';
 
-const BACKDROP: WowBackdrop = {
-  bgFile: 'Interface\\Tooltips\\UI-Tooltip-Background',
-  edgeFile: 'Interface\\Tooltips\\UI-Tooltip-Border',
-  tile: true,
-  tileSize: 12,
-  edgeSize: 12,
-  insets: { left: 2, right: 2, top: 2, bottom: 2 }
-};
-const FONT: JSX.Font = [
-  'Interface\\AddOns\\tsCoolDown\\Fonts\\coolDownFont.ttf',
-  22
-];
-const COLOR_BLACK: JSX.Color4 = [0, 0, 0, 1];
 const TEXT_COLOR: JSX.Color4 = [1, 0.82, 0, 1];
-const BAR_COLOR: JSX.Color4 = [0.4, 0.4, 0.95, 1];
-const BORDER_SIZE: JSX.Size = [80, 32];
-const BAR_SIZE: JSX.Size = [70, 22];
+const PROGRESS_BAR_COLOR: JSX.Color4 = [0.4, 0.4, 0.95, 1];
+const PROGRESS_BAR_SIZE: JSX.Size = [70, 22];
 
 interface Props {
   start: number;
@@ -60,7 +52,7 @@ export class Bar extends Didact.Component<Props, State> {
 
     return (
       <frame
-        Size={BORDER_SIZE}
+        Size={BAR_SIZE}
         Backdrop={BACKDROP}
         BackdropBorderColor={COLOR_BLACK}
         BackdropColor={COLOR_BLACK}
@@ -71,14 +63,14 @@ export class Bar extends Didact.Component<Props, State> {
           MinMaxValues={this.minMaxValues}
           Value={secondsRemaining}
           Point="CENTER"
-          Size={BAR_SIZE}
+          Size={PROGRESS_BAR_SIZE}
           StatusBarTexture="Interface\AddOns\tsCoolDown\Textures\Smooth"
-          StatusBarColor={BAR_COLOR}
+          StatusBarColor={PROGRESS_BAR_COLOR}
         >
           <font-string
             Text={label}
             DrawLayer="OVERLAY"
-            Font={FONT}
+            Font={COOLDOWN_FONT}
             Point="CENTER"
             JustifyH="CENTER"
             TextColor={TEXT_COLOR}
