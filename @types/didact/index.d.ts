@@ -20,7 +20,7 @@ declare namespace JSX {
 
   interface BaseProps {
     key?: string;
-    children?: string;
+    children?: any;
   }
 
   interface BaseFrameProps extends BaseProps {
@@ -35,7 +35,15 @@ declare namespace JSX {
     BackdropBorderColor?: Color4;
     BackdropColor?: Color4;
 
-    OnUpdate?: (frame: WowFrame, secondsElapsed: number) => void;
+    OnUpdate?: (this: void, frame: WowFrame, secondsElapsed: number) => void;
+
+    Clickable?: WowMouseButton[];
+    OnClick?: (this: void, frame: WowFrame, button: WowMouseButton, down: boolean) => void;
+
+    Draggable?: WowMouseButton[];
+    Movable?: boolean;
+    OnDragStart?: (this: void, frame: WowFrame, button: WowMouseButton, down: boolean) => void;
+    OnDragStop?: (this: void, frame: WowFrame, button: WowMouseButton, down: boolean) => void;
   }
 
   interface LayeredRegionProps extends BaseFrameProps {

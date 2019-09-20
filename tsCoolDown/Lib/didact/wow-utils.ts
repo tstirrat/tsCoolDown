@@ -68,7 +68,8 @@ export function cleanupFrame(frame: WowRegion) {
 const isEvent = (name: string) => name.startsWith('On');
 const isStandardProperty = (name: string) => !isEvent(name) &&
     !isOrderedProperty(name) && name !== 'children' && name !== 'Points' && name !== 'Point' &&
-    name !== 'name' && name !== 'DrawLayer' && name !== 'inheritsFrom';
+    name !== 'name' && name !== 'DrawLayer' && name !== 'inheritsFrom' && name !== 'Clickable' &&
+    name !== 'Draggable';
 
 /**
  * These properties must be set _before_ their other properties e.g. Background
@@ -128,6 +129,13 @@ function updateFrameEvents(
       .forEach(event => {
         (frame as WowFrame).SetScript(event as WowEventOnAny, undefined);
       });
+
+  if (nextProps['Clickable']) {
+    (frame as any).RegisterForClicks('RightButton');
+  }
+  if (nextProps['Draggable']) {
+    (frame as any).RegisterForDrag(...nextProps['Draggable']);
+  }
 
   // Add new event listeners
   Object.keys(nextProps)
@@ -203,7 +211,7 @@ function attemptSetProperty(frame: WowRegion, key: string, value: any) {
 
   if (setterFn && typeof setterFn == 'function') {
     if (typeof value === 'string' || typeof value === 'number' ||
-        isTableValue(key)) {
+        typeof value === 'boolean' || isTableValue(key)) {
       region[setter](value);
     } else {
       // console.log( `calling ${setter} with array elements as args:`,
