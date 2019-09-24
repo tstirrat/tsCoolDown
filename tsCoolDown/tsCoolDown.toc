@@ -4,6 +4,8 @@
 ## Notes: React + TypeScript + WoW PoC
 ## Author: tstirrat, wereHamster/asmdel
 ## SavedVariables: tsCoolDown_Db
+## OptionalDeps: Ace3
+## X-Embeds: Ace3
 
 embeds.xml
 RequireStub.lua
