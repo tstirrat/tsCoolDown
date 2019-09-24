@@ -12,7 +12,7 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
-    "@wartoshika/wow-declarations": "wartoshika/wow-declarations#master",
-    "typescript-to-lua": "github:tstirrat/TypeScriptToLua#wow-temp-mod"
+    "@wartoshika/wow-declarations": "git@github.com:wartoshika/wow-declarations.git#master",
+    "typescript-to-lua": "git@github.com:tstirrat/TypeScriptToLua#wow-temp-mod"
   }
 }
