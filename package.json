@@ -13,9 +13,6 @@
   "private": true,
   "devDependencies": {
     "@wartoshika/wow-declarations": "wartoshika/wow-declarations#master",
-    "gulp": "^4.0.2",
-    "ts-node": "^8.3.0",
-    "typescript": "^3.5.3",
     "typescript-to-lua": "github:tstirrat/TypeScriptToLua#wow-temp-mod"
   }
 }
