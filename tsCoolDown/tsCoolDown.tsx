@@ -8,12 +8,16 @@ const tsCoolDown = LibStub('AceAddon-3.0').NewAddon(
 );
 
 tsCoolDown.OnInitialize = function() {
-  this.RegisterChatCommand('tsc', input => {
+  tsCoolDown.RegisterChatCommand('tsc', input => {
     console.log('/tsc', input);
   });
-  tsCoolDown_Db = tsCoolDown_Db || {};
+  const db = LibStub('AceDB-3.0').New<GlobalOptions>(
+    'tsCoolDown_Db',
+    { x: 200, y: 200 },
+    true /* use global "Default" profile */
+  );
 
-  const { x = 200, y = 200 } = tsCoolDown_Db;
+  const { x, y } = db.profile;
 
   const frame = CreateFrame('Frame', 'tsCoolDown_UIParent', UIParent);
   frame.SetPoint('CENTER', UIParent, 'CENTER', x, y);

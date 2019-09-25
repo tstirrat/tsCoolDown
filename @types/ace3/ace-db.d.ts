@@ -11,8 +11,8 @@ declare type AceDBEventCallback = (profile: string) => void;
  *
  * Usage:
  *
- * ```lua
- * local db = LibStub("AceDB-3.0"):New("MyAddonDB", defaults, true)
+ * ```
+ * const db = LibStub('AceDB-3.0').New('MyAddonDB', defaults, true);
  * ```
  *
  * @see https://www.wowace.com/projects/ace3/pages/api/ace-db-3-0
@@ -52,7 +52,8 @@ declare interface AceDBFactory {
    *     pass true to use a shared global profile called "Default".
    */
   New<T extends Object = {}>(
-      tbl: string|Object, defaults?: {}, defaultProfile?: string): AceDB<T>;
+      tbl: string|Object, defaults?: {},
+      defaultProfile?: string|true): AceDB<T>;
 }
 
 /**
