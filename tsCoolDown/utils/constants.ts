@@ -1,19 +1,19 @@
+export const CONFIG_DEFAULTS = {
+  x: 200,
+  y: 200
+};
 export const BACKDROP: WowBackdrop = {
   bgFile: 'Interface\\Tooltips\\UI-Tooltip-Background',
   edgeFile: 'Interface\\Tooltips\\UI-Tooltip-Border',
   tile: true,
   tileSize: 12,
   edgeSize: 12,
-  insets: { left: 2, right: 2, top: 2, bottom: 2 }
+  insets: {left: 2, right: 2, top: 2, bottom: 2}
 };
-export const COOLDOWN_FONT: JSX.Font = [
-  'Interface\\AddOns\\tsCoolDown\\Fonts\\coolDownFont.ttf',
-  22
-];
-export const ANCHOR_FONT: JSX.Font = [
-  'Interface\\AddOns\\tsCoolDown\\Fonts\\coolDownFont.ttf',
-  18
-];
+export const COOLDOWN_FONT: JSX.Font =
+    ['Interface\\AddOns\\tsCoolDown\\Fonts\\coolDownFont.ttf', 22];
+export const ANCHOR_FONT: JSX.Font =
+    ['Interface\\AddOns\\tsCoolDown\\Fonts\\coolDownFont.ttf', 18];
 export const COLOR_BLACK: JSX.Color4 = [0, 0, 0, 1];
 export const COLOR_WHITE: JSX.Color4 = [255, 255, 255, 1];
 

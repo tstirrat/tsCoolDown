@@ -1,6 +1,6 @@
 import * as Didact from './Lib/didact/didact';
 import { ActiveCooldowns } from './Components/ActiveCooldowns';
-import { BAR_HEIGHT, COOLDOWN_WIDTH } from './utils/constants';
+import { BAR_HEIGHT, COOLDOWN_WIDTH, CONFIG_DEFAULTS } from './utils/constants';
 
 const tsCoolDown = LibStub('AceAddon-3.0').NewAddon(
   'tsCoolDown',
@@ -13,7 +13,7 @@ tsCoolDown.OnInitialize = function() {
   });
   const db = LibStub('AceDB-3.0').New<GlobalOptions>(
     'tsCoolDown_Db',
-    { x: 200, y: 200 },
+    { profile: CONFIG_DEFAULTS },
     true /* use global "Default" profile */
   );
 

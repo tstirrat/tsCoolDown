@@ -52,7 +52,7 @@ declare interface AceDBFactory {
    *     pass true to use a shared global profile called "Default".
    */
   New<T extends Object = {}>(
-      tbl: string|Object, defaults?: {},
+      tbl: string|Object, defaults?: Partial<AceDBNamespace<T>>,
       defaultProfile?: string|true): AceDB<T>;
 }
 
@@ -231,7 +231,7 @@ interface AceDBNamespace<T extends Object = {}> {
    *
    * @see https://www.wowace.com/projects/ace3/pages/api/ace-db-3-0
    */
-  RegisterDefaults(defaults: Object): void;
+  RegisterDefaults(defaults: Partial<AceDBNamespace<T>>): void;
 
   /**
    * Resets the current profile to the default values (if specified).
