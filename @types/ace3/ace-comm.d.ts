@@ -21,7 +21,7 @@ declare interface AceComm {
    * @see https://www.wowace.com/projects/ace3/pages/api/ace-comm-3-0
    */
   SendCommMessage<T = unknown>(
-      prefix: string, text: string, distribution: WowAddonMessageType,
+      prefix: string, text: string, distribution: WoWAPI.AddonMessageType,
       target?: string, priority?: ChatThrottleLibPriority,
       callbackFn?: AceCommChunkSentCallback<T>, callbackArg?: T): void;
 }

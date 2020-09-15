@@ -1,18 +1,19 @@
 import { InternalElement } from "./element";
+import "@wartoshika/wow-declarations";
 
 type Props = Record<string, any>;
 
-const frameCache: Record<string, WowRegion[]> = {
+const frameCache: Record<string, WoWAPI.Region[]> = {
 };
 
-function getCache(type: string): WowRegion|undefined {
+function getCache(type: string): WoWAPI.Region|undefined {
   // if (frameCache[type]) {
   //   return frameCache[type].length ? frameCache[type].pop() : undefined;
   // }
   return undefined;
 }
 
-function setCache(frame: WowRegion) {
+function setCache(frame: WoWAPI.Region) {
   const type = frame.GetObjectType();
   console.log('store cache', type);
   if (frameCache[type] && frameCache[type].length) {
@@ -23,8 +24,8 @@ function setCache(frame: WowRegion) {
 }
 
 export function createFrame(
-    jsxType: string, parentFrame: WowRegion,
-    props: Props): WowRegion {
+    jsxType: string, parentFrame: WoWAPI.Region,
+    props: Props): WoWAPI.Region {
   const frameType = pascalCase(jsxType);
 
   let frame = getCache(frameType);
@@ -37,22 +38,22 @@ export function createFrame(
   }
 
   if (frameType === 'FontString') {
-    frame = (parentFrame as WowFrame)
+    frame = (parentFrame as WoWAPI.Frame)
         .CreateFontString(name, props.DrawLayer || 'ARTWORK', props.inheritsFrom);
   } else if (frameType === 'Texture') {
-    frame = (parentFrame as WowFrame)
+    frame = (parentFrame as WoWAPI.Frame)
         .CreateTexture(name, props.DrawLayer || 'ARTWORK', props.inheritsFrom);
   } else {
     frame =
-        CreateFrame(frameType as WowFrameType, name, parentFrame, props.inheritsFrom) as
-        WowFrame;
+        CreateFrame(frameType as WoWAPI.FrameType, name, parentFrame, props.inheritsFrom) as
+        WoWAPI.Frame;
   }
   // frame.SetParent(parentFrame);
   console.log('created frame:', frameType);
   return frame;
 }
 
-export function cleanupFrame(frame: WowRegion) {
+export function cleanupFrame(frame: WoWAPI.Region) {
   console.log('cleaning up frame', frame.GetObjectType(), frame);
   frame.Hide();
   frame.ClearAllPoints();
@@ -85,7 +86,7 @@ const isOrderedProperty = (name: string) => name === 'Font' ||
 const isTableValue = (name: string) => name === 'Backdrop';
 
 export function updateFrameProperties(
-    frame: WowRegion, prevProps: Props, nextProps: Props) {
+    frame: WoWAPI.Region, prevProps: Props, nextProps: Props) {
   updateFramePoints(frame, nextProps);
   updateFrameLayer(frame, nextProps);
   updateFrameEvents(frame, prevProps, nextProps);
@@ -94,7 +95,7 @@ export function updateFrameProperties(
 }
 
 function updateOrderSpecificProperties(
-    frame: WowRegion, prevProps: Props, nextProps: Props) {
+    frame: WoWAPI.Region, prevProps: Props, nextProps: Props) {
   // Remove properties that are no longer specified
   Object.keys(prevProps)
       .filter(key => isOrderedProperty(key) && !nextProps[key])
@@ -108,7 +109,7 @@ function updateOrderSpecificProperties(
 }
 
 function updateRemainingProperties(
-    frame: WowRegion, prevProps: Props, nextProps: Props) {
+    frame: WoWAPI.Region, prevProps: Props, nextProps: Props) {
   // Remove properties that are no longer specified
   Object.keys(prevProps)
       .filter(key => isStandardProperty(key) && !nextProps[key])
@@ -122,12 +123,12 @@ function updateRemainingProperties(
 }
 
 function updateFrameEvents(
-    frame: WowRegion, prevProps: Props, nextProps: Props) {
+    frame: WoWAPI.Region, prevProps: Props, nextProps: Props) {
   // Detach removed event listeners
   Object.keys(prevProps)
       .filter(key => isEvent(key) && !nextProps[key])
       .forEach(event => {
-        (frame as WowFrame).SetScript(event as WowEventOnAny, undefined);
+        (frame as WoWAPI.Frame).SetScript(event as WoWAPI.Event.OnAny, undefined);
       });
 
   if (nextProps['Clickable']) {
@@ -142,12 +143,12 @@ function updateFrameEvents(
       .filter(key => isEvent(key) && prevProps[key] !== nextProps[key])
       .forEach(event => {
         // console.log('attaching event', event);
-        (frame as WowFrame).SetScript(event as WowEventOnAny, nextProps[event]);
+        (frame as WoWAPI.Frame).SetScript(event as WoWAPI.Event.OnAny, nextProps[event]);
       });
 }
 
 /** Handle frame points, size to parent unless specified. */
-function updateFramePoints(frame: WowRegion, nextProps: JSX.BaseFrameProps) {
+function updateFramePoints(frame: WoWAPI.Region, nextProps: JSX.BaseFrameProps) {
   frame.ClearAllPoints();
   if (nextProps.Point) {
     setPoint(frame, nextProps.Point);
@@ -163,8 +164,8 @@ function updateFramePoints(frame: WowRegion, nextProps: JSX.BaseFrameProps) {
 }
 
 /** Handle frame points, size to parent unless specified. */
-function updateFrameLayer(frame: WowRegion, nextProps: JSX.LayeredRegionProps) {
-  const region = frame as WowLayeredRegion;
+function updateFrameLayer(frame: WoWAPI.Region, nextProps: JSX.LayeredRegionProps) {
+  const region = frame as WoWAPI.LayeredRegion;
   const layer = nextProps.DrawLayer;
 
   if (!layer || typeof region.SetDrawLayer !== 'function') {
@@ -176,18 +177,18 @@ function updateFrameLayer(frame: WowRegion, nextProps: JSX.LayeredRegionProps) {
     return;
   }
 
-  region.SetDrawLayer(layer[0] as WowLayer, layer[1]);
+  region.SetDrawLayer(layer[0] as WoWAPI.Layer, layer[1]);
 }
 
 /** Create a point declaration */
 export function P(
-    point: WowPoint, x?: number, y?: number, relativePoint?: WowPoint,
-    relativeFrame?: WowRegion): JSX.PointDefinition {
+    point: WoWAPI.Point, x?: number, y?: number, relativePoint?: WoWAPI.Point,
+    relativeFrame?: WoWAPI.Region): JSX.PointDefinition {
   // TODO: memoize for perf
   return {point, relativePoint, relativeFrame, x, y};
 }
 
-function setPoint(frame: WowRegion, pointDef: JSX.Point) {
+function setPoint(frame: WoWAPI.Region, pointDef: JSX.Point) {
   if (typeof pointDef === 'string') {
     frame.SetPoint(pointDef);
   } else {
@@ -197,13 +198,13 @@ function setPoint(frame: WowRegion, pointDef: JSX.Point) {
     if (relativeFrame) {
       frame.SetPoint(point, relativeFrame, relativeTo, x || 0, y || 0);
     } else {
-      const parent = frame.GetParent() as WowRegion;
+      const parent = frame.GetParent() as WoWAPI.Region;
       frame.SetPoint(point, parent, relativeTo, x || 0, y || 0);
     }
   }
 }
 
-function attemptSetProperty(frame: WowRegion, key: string, value: any) {
+function attemptSetProperty(frame: WoWAPI.Region, key: string, value: any) {
   const region = frame as any as Record<string, (v: any) => void>;
   const setter = `Set${key}`;
   const setterFn = region[setter];

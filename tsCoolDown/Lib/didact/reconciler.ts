@@ -1,3 +1,4 @@
+import "@wartoshika/wow-declarations";
 import {Component} from './component';
 import {InternalElement, TEXT_ELEMENT} from './element';
 import {cleanupFrame, createFrame, updateFrameProperties} from './wow-utils';
@@ -7,25 +8,25 @@ export interface Instance {
   publicInstance?: Component;
   childInstance: Instance|null;
   childInstances: Array<Instance|null>;
-  hostFrame: WowRegion;
+  hostFrame: WoWAPI.Region;
   element: InternalElement;
 }
 
 let rootInstance: Instance|null = null;
 
-export function render(element: InternalElement, container: WowRegion) {
+export function render(element: InternalElement, container: WoWAPI.Region) {
   const prevInstance = rootInstance;
   const nextInstance = reconcile(container, prevInstance, element);
   rootInstance = nextInstance;
 }
 
 export function reconcile(
-    parentFrame: WowRegion, instance: Instance|null,
+    parentFrame: WoWAPI.Region, instance: Instance|null,
     element: InternalElement|null): Instance|null {
   if (!instance) {
     // Create instance
-    return instantiate(
-        assert(element, 'element should not be null'), parentFrame);
+    assert(element, 'element should not be null')
+    return instantiate(element!, parentFrame);
   } else if (!element) {
     // Remove instance
     cleanupFrames(instance);
@@ -91,7 +92,7 @@ function reconcileChildren(instance: Instance, element: InternalElement) {
 }
 
 function instantiate(
-    element: InternalElement, parentFrame: WowRegion): Instance {
+    element: InternalElement, parentFrame: WoWAPI.Region): Instance {
   const {type, props} = element;
 
   if (typeof type === 'string') {

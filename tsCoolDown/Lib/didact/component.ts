@@ -1,3 +1,4 @@
+import "@wartoshika/wow-declarations";
 import {InternalElement} from './element';
 import {Instance, reconcile} from './reconciler';
 
@@ -18,7 +19,7 @@ export class Component<P = {}, S = {}> {
 }
 
 function updateInstance(internalInstance: Instance) {
-  const parentDom = internalInstance.hostFrame.GetParent() as WowFrame;
+  const parentDom = internalInstance.hostFrame.GetParent() as WoWAPI.Frame;
   const element = internalInstance.element;
   if (parentDom) {
     reconcile(parentDom, internalInstance, element);

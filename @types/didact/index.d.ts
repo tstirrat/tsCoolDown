@@ -4,14 +4,14 @@ declare function assert<T>(assertion: T|undefined|null, message?: string): T;
 
 declare namespace JSX {
   interface PointDefinition {
-    point: WowPoint;
-    relativePoint?: WowPoint;
-    relativeFrame?: WowRegion|string;
+    point: WoWAPI.Point;
+    relativePoint?: WoWAPI.Point;
+    relativeFrame?: WoWAPI.Region|string;
     x?: number;
     y?: number;
   }
 
-  type Point = PointDefinition|WowPoint;
+  type Point = PointDefinition|WoWAPI.Point;
 
   type Color4 = [number, number, number, number];
   type Tuple<T = number> = [T, T];
@@ -31,24 +31,24 @@ declare namespace JSX {
     Size?: Size;
     Points?: Point[];
     Point?: Point;
-    Backdrop?: WowBackdrop;
+    Backdrop?: WoWAPI.Backdrop;
     BackdropBorderColor?: Color4;
     BackdropColor?: Color4;
 
-    OnUpdate?: (this: void, frame: WowFrame, secondsElapsed: number) => void;
+    OnUpdate?: (this: void, frame: WoWAPI.Frame, secondsElapsed: number) => void;
 
-    Clickable?: WowMouseButton[];
-    OnClick?: (this: void, frame: WowFrame, button: WowMouseButton, down: boolean) => void;
+    Clickable?: WoWAPI.MouseButton[];
+    OnClick?: (this: void, frame: WoWAPI.Frame, button: WoWAPI.MouseButton, down: boolean) => void;
 
-    Draggable?: WowMouseButton[];
+    Draggable?: WoWAPI.MouseButton[];
     Movable?: boolean;
-    OnDragStart?: (this: void, frame: WowFrame, button: WowMouseButton, down: boolean) => void;
-    OnDragStop?: (this: void, frame: WowFrame, button: WowMouseButton, down: boolean) => void;
+    OnDragStart?: (this: void, frame: WoWAPI.Frame, button: WoWAPI.MouseButton, down: boolean) => void;
+    OnDragStop?: (this: void, frame: WoWAPI.Frame, button: WoWAPI.MouseButton, down: boolean) => void;
   }
 
   interface LayeredRegionProps extends BaseFrameProps {
     VertexColor?: Color4;
-    DrawLayer?: WowLayer | [WowLayer, number];
+    DrawLayer?: WoWAPI.Layer | [WoWAPI.Layer, number];
   }
 
   interface StatusBarProps extends BaseFrameProps {
@@ -59,7 +59,7 @@ declare namespace JSX {
   }
 
   interface TextureProps extends LayeredRegionProps {
-    Texture?: WowTexturePath;
+    Texture?: WoWAPI.TexturePath;
   }
 
   interface FontInstanceProps extends LayeredRegionProps {
@@ -68,8 +68,8 @@ declare namespace JSX {
 
   interface FontStringProps extends FontInstanceProps {
     Text?: string;
-    JustifyH?: WowHorizontalAlign;
-    JustifyV?: WowVerticalAlign;
+    JustifyH?: WoWAPI.HorizontalAlign;
+    JustifyV?: WoWAPI.VerticalAlign;
     TextColor?: Color4;
   }
 

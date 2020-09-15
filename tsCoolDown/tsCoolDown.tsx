@@ -23,5 +23,5 @@ tsCoolDown.OnInitialize = function() {
   frame.SetPoint('CENTER', UIParent, 'CENTER', x, y);
   frame.SetSize(COOLDOWN_WIDTH, BAR_HEIGHT);
 
-  Didact.render(<ActiveCooldowns />, frame);
+  Didact.render(<ActiveCooldowns/>, frame);
 };

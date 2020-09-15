@@ -1,5 +1,6 @@
 /** @noSelfInFile */
 
+import "@wartoshika/wow-declarations";
 import { throttle } from './time';
 import { stringify } from './debug';
 
@@ -13,7 +14,7 @@ export interface Timer {
   type: Type;
   start: number;
   duration: number;
-  textures: WowTexturePath[];
+  textures: WoWAPI.TexturePath[];
   end: number;
 }
 
@@ -23,7 +24,7 @@ function insert(
   type: Type,
   start: number,
   duration: number,
-  texture: WowTexturePath
+  texture: WoWAPI.TexturePath
 ) {
   // console.log('insert', type, start, texture);
   const end = start + duration;
@@ -120,7 +121,7 @@ function scanTrinkets() {
   }
 }
 
-const textureOverride: Record<number, WowTexturePath> = {
+const textureOverride: Record<number, WoWAPI.TexturePath> = {
   // Healing Potions
   [118]: 'Interface\\Icons\\INV_Potion_54',
   [858]: 'Interface\\Icons\\INV_Potion_54',
@@ -157,20 +158,20 @@ function scanIntentory() {
   for (let bagIndex = 0; bagIndex <= 4; bagIndex++) {
     for (
       let i = 1;
-      i <= GetContainerNumSlots(bagIndex as WOW_CONTAINER_ID);
+      i <= GetContainerNumSlots(bagIndex as WoWAPI.CONTAINER_ID);
       i++
     ) {
       const itemLink = GetContainerItemLink(bagIndex, i);
       if (itemLink) {
         const [start, duration] = GetContainerItemCooldown(
-          bagIndex as WOW_CONTAINER_ID,
+          bagIndex as WoWAPI.CONTAINER_ID,
           i
         );
         if (start > 0) {
           const [itemID, , , , , type] = GetItemInfo(itemLink);
           if (type === 'Consumable' && duration > 2) {
             const [texture] = GetContainerItemInfo(
-              bagIndex as WOW_CONTAINER_ID,
+              bagIndex as WoWAPI.CONTAINER_ID,
               i
             );
             insert(
@@ -199,7 +200,7 @@ const eventMap: Record<string, Function[]> = {
   UNIT_INVENTORY_CHANGED: [scanTrinkets]
 };
 
-function determineScanLocations(_: WowFrame, event: WowEvent) {
+function determineScanLocations(_: WoWAPI.Frame, event: WoWAPI.Event) {
   toDo = eventMap[event] || [];
 }
 
@@ -216,7 +217,7 @@ const doScans = throttle(function doScans_inner() {
 
 
 function attachScanEvents(
-  frame: WowFrame,
+  frame: WoWAPI.Frame,
   callback: (this: void, timers: Timer[]) => void
 ) {
   frame.SetScript('OnUpdate', function onUpdate_main(frame, elapsed) {
@@ -232,12 +233,12 @@ function attachScanEvents(
   });
 
   Object.keys(eventMap).forEach(event => {
-    frame.RegisterEvent(event as WowEvent);
+    frame.RegisterEvent(event as WoWAPI.Event);
   });
   frame.SetScript('OnEvent', determineScanLocations);
 }
 
-let eventFrame: WowFrame;
+let eventFrame: WoWAPI.Frame;
 
 export function subscribe(callback: (this: void, timers: Timer[]) => void) {
   if (!eventFrame) {

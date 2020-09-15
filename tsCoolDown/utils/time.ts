@@ -1,4 +1,6 @@
 /** @noSelfInFile */
+import "@wartoshika/wow-declarations";
+
 function fmod(a: number, b: number) {
   return Number((a - Math.floor(a / b) * b));
 }
@@ -19,7 +21,7 @@ export function getRemainingTime(start: number, duration: number) {
 export function throttle(fn: CallableFunction, threshold: number) {
   assert(threshold, 'threshold is required');
   let elapsed = 0;
-  return function(frame: WowFrame, frameTime: number) {
+  return function(frame: WoWAPI.Frame, frameTime: number) {
     elapsed +=  frameTime;
     if (elapsed > threshold) {
       elapsed = 0;

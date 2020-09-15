@@ -10,8 +10,8 @@ export interface Props {
   label: string;
   Point: JSX.Point;
   Size: JSX.Size;
-  onMoved?: (frame: WowFrame) => void;
-  onClick?: (frame: WowFrame, button: WowMouseButton, down: boolean) => void;
+  onMoved?: (frame: WoWAPI.Frame) => void;
+  onClick?: (frame: WoWAPI.Frame, button: WoWAPI.MouseButton, down: boolean) => void;
 }
 
 export class ConfigAnchor extends Didact.Component<Props, {}> {
@@ -44,18 +44,18 @@ export class ConfigAnchor extends Didact.Component<Props, {}> {
   }
 
   private readonly onClick = (
-    frame: WowFrame,
-    button: WowMouseButton,
+    frame: WoWAPI.Frame,
+    button: WoWAPI.MouseButton,
     down: boolean
   ) => {
     this.props.onClick && this.props.onClick(frame, button, down);
   };
 
-  private readonly onDragStart = (frame: WowFrame) => {
+  private readonly onDragStart = (frame: WoWAPI.Frame) => {
     frame.StartMoving();
   };
 
-  private readonly onDragStop = (frame: WowFrame) => {
+  private readonly onDragStop = (frame: WoWAPI.Frame) => {
     frame.StopMovingOrSizing();
     this.props.onMoved && this.props.onMoved(frame);
   };

@@ -28,7 +28,7 @@ declare interface AceConfigDialog {
    * @see https://www.wowace.com/projects/ace3/pages/api/ace-config-dialog-3-0
    */
   AddToBlizOptions(
-      appName: string, name: string, parent: string, path?: string): WowFrame;
+      appName: string, name: string, parent: string, path?: string): WoWAPI.Frame;
 
   /**
    * Close a specific options window.

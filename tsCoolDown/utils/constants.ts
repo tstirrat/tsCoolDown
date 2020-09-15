@@ -1,8 +1,10 @@
+import "@wartoshika/wow-declarations";
+
 export const CONFIG_DEFAULTS = {
   x: 200,
   y: 200
 };
-export const BACKDROP: WowBackdrop = {
+export const BACKDROP: WoWAPI.Backdrop = {
   bgFile: 'Interface\\Tooltips\\UI-Tooltip-Background',
   edgeFile: 'Interface\\Tooltips\\UI-Tooltip-Border',
   tile: true,

@@ -1,10 +1,11 @@
 import * as Didact from '../Lib/didact/didact';
+import "@wartoshika/wow-declarations";
 
 const COLOR_BLACK: JSX.Color4 = [0, 0, 0, 1];
 const SIZE: JSX.Size = [31, 31];
 
 export interface Props {
-  texture: WowTexturePath;
+  texture: WoWAPI.TexturePath;
   Point: JSX.Point;
 }
 

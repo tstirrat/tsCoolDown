@@ -11,8 +11,10 @@
   "author": "",
   "license": "MIT",
   "private": true,
-  "devDependencies": {
-    "@wartoshika/wow-declarations": "git@github.com:wartoshika/wow-declarations.git#master",
-    "typescript-to-lua": "git@github.com:tstirrat/TypeScriptToLua#wow-temp-mod"
+  "dependencies": {
+    "@wartoshika/wow-declarations": "^8.3.0-release.1",
+    "lua-types": "^2.8.0",
+    "ts-node": "^9.0.0",
+    "typescript-to-lua": "^0.35.0"
   }
 }
