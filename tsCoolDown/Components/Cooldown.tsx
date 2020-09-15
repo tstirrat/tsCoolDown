@@ -3,11 +3,12 @@ import { Icon } from './Icon';
 import { Bar } from './Bar';
 import { P } from '../Lib/didact/wow-utils';
 import { ICON_SIZE, COOLDOWN_FULL_SIZE } from '../utils/constants';
+import "@wartoshika/wow-declarations";
 
 export interface Props {
   start: number;
   duration: number;
-  textures: WowTexturePath[];
+  textures: WoWAPI.TexturePath[];
   Point: JSX.Point;
 }
 

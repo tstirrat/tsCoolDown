@@ -4,11 +4,12 @@ import { P } from '../Lib/didact/wow-utils';
 import { subscribe } from '../utils/cooldowns';
 import { ConfigAnchor } from './config/ConfigAnchor';
 import { COOLDOWN_FULL_SIZE, BAR_HEIGHT } from '../utils/constants';
+import "@wartoshika/wow-declarations";
 
 interface Timer {
   start: number;
   duration: number;
-  textures: WowTexturePath[];
+  textures: WoWAPI.TexturePath[];
 }
 
 interface State {
@@ -59,15 +60,15 @@ export class ActiveCooldowns extends Didact.Component<{}, State> {
 
   /** Toggle config mode */
   private readonly onClick = (
-    frame: WowFrame,
-    button: WowMouseButton,
+    frame: WoWAPI.Frame,
+    button: WoWAPI.MouseButton,
     down: boolean
   ) => {
     console.log('OnClick', frame, button, down);
     this.setState({ isInConfigMode: !this.state.isInConfigMode });
   };
 
-  private readonly onMoved = (frame: WowFrame) => {
+  private readonly onMoved = (frame: WoWAPI.Frame) => {
     const [, , , x, y] = frame.GetPoint(1);
     tsCoolDown_Db.x = x;
     tsCoolDown_Db.y = y;

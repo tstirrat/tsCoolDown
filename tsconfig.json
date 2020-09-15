@@ -8,10 +8,21 @@
     "moduleResolution": "node",
     "rootDir": "tsCoolDown",
     "outDir": "./tsCoolDown/build",
-    "typeRoots": ["node_modules/@wartoshika"]
+    "typeRoots": [
+      "node_modules/@wartoshika/wow-declarations",
+      "node_modules/lua-types/5.1"
+    ],
+    "types": [
+      "./@types/didact/",
+      "./@types/ace3/"
+    ]
   },
   "tstl": {
     "luaTarget": "5.1",
-    "luaLibImport": "require"
+    "luaLibImport": "require",
+    "sourceMapTraceback": true,
+    "luaPlugins": [
+      {"name": "./tsCoolDown/WowJsxTransformer.ts"}
+    ]
   }
 }

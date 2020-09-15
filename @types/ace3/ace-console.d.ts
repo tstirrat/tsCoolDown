@@ -31,7 +31,7 @@ declare interface AceConsole {
    *
    * @see https://www.wowace.com/projects/ace3/pages/api/ace-console-3-0
    */
-  Print(chatFrame: WowChatFrame, ...args: unknown[]): void;
+  Print(chatFrame: WoWAPI.ChatFrame, ...args: unknown[]): void;
 
   /**
    * Formatted (using format()) print to `DEFAULT_CHAT_FRAME` or given ChatFrame
@@ -39,7 +39,7 @@ declare interface AceConsole {
    *
    * @see https://www.wowace.com/projects/ace3/pages/api/ace-console-3-0
    */
-  Printf(chatFrame: WowChatFrame, format: string, ...args: unknown[]): void;
+  Printf(chatFrame: WoWAPI.ChatFrame, format: string, ...args: unknown[]): void;
 
   /**
    * Register a simple chat command
