@@ -1,5 +1,3 @@
-import "@wartoshika/wow-declarations";
-
 export const CONFIG_DEFAULTS = {
   x: 200,
   y: 200

@@ -1,4 +1,3 @@
-import "@wartoshika/wow-declarations";
 import {InternalElement} from './element';
 import {Instance, reconcile} from './reconciler';
 

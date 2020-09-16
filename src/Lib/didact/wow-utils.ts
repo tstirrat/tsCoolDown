@@ -1,5 +1,5 @@
+import { CreateFrame, UIParent } from "@wartoshika/wow-declarations";
 import { InternalElement } from "./element";
-import "@wartoshika/wow-declarations";
 
 type Props = Record<string, any>;
 
@@ -45,7 +45,7 @@ export function createFrame(
         .CreateTexture(name, props.DrawLayer || 'ARTWORK', props.inheritsFrom);
   } else {
     frame =
-        CreateFrame(frameType as WoWAPI.FrameType, name, parentFrame, props.inheritsFrom) as
+        CreateFrame(frameType as WoWAPI.FrameType, name, parentFrame, props.inheritsFrom || "BackdropTemplate") as
         WoWAPI.Frame;
   }
   // frame.SetParent(parentFrame);
@@ -208,7 +208,7 @@ function attemptSetProperty(frame: WoWAPI.Region, key: string, value: any) {
   const region = frame as any as Record<string, (v: any) => void>;
   const setter = `Set${key}`;
   const setterFn = region[setter];
-  assert(setterFn, `Tried to use ${setter} and it did not exist`);
+  assert(setterFn, `Tried to use ${setter} and it did not exist on ${region}`);
 
   if (setterFn && typeof setterFn == 'function') {
     if (typeof value === 'string' || typeof value === 'number' ||
