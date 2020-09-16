@@ -6,23 +6,23 @@
     "jsx": "react",
     "jsxFactory": "Didact.createElement",
     "moduleResolution": "node",
-    "rootDir": "tsCoolDown",
-    "outDir": "./tsCoolDown/build",
+    "rootDir": "./src/",
+    "outDir": "addon/GeneratedSource",
     "typeRoots": [
-      "node_modules/@wartoshika/wow-declarations",
+      "node_modules/@wartoshika/wow-declarations/declarations",
       "node_modules/lua-types/5.1"
     ],
     "types": [
-      "./@types/didact/",
-      "./@types/ace3/"
+      "./src/@types/didact/",
+      "./src/@types/ace3/"
     ]
   },
   "tstl": {
     "luaTarget": "5.1",
     "luaLibImport": "require",
-    "sourceMapTraceback": true,
     "luaPlugins": [
-      {"name": "./tsCoolDown/WowJsxTransformer.ts"}
+      {"name": "./src/ts_transformers/WowJsxTransformer.ts"},
+      {"name": "./src/ts_transformers/RequirePreload.ts"}
     ]
   }
 }

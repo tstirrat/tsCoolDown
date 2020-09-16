@@ -1,11 +1,17 @@
 local preloadFns = {}
 local modules = {}
+local function ends_with(str, ending)
+  return ending == "" or str:sub(-#ending) == ending
+end
 
 function tstl_register_module(name, exportFn)
   preloadFns[name] = exportFn
 end
 
 function require(name)
+  if ends_with(name, "@wartoshika.wow-declarations") then
+    return _G
+  end
   if (modules[name]) then
     return modules[name]
   end

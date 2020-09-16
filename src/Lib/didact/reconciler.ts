@@ -1,4 +1,3 @@
-import "@wartoshika/wow-declarations";
 import {Component} from './component';
 import {InternalElement, TEXT_ELEMENT} from './element';
 import {cleanupFrame, createFrame, updateFrameProperties} from './wow-utils';

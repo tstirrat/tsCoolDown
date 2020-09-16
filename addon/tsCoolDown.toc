@@ -1,0 +1,32 @@
+## Interface: 90001
+## Version: 0.0.1
+## Title: tsCoolDown
+## Notes: React + TypeScript + WoW PoC
+## Author: tstirrat, Brusalk, wereHamster/asmdel
+## SavedVariables: tsCoolDown_Db
+## OptionalDeps: Ace3
+## X-Embeds: Ace3
+
+embeds.xml
+RequireStub.lua
+
+GeneratedSource/lualib_bundle.lua
+GeneratedSource/Lib/didact/component.lua
+GeneratedSource/Lib/didact/element.lua
+GeneratedSource/Lib/didact/reconciler.lua
+GeneratedSource/Lib/didact/wow-utils.lua
+
+GeneratedSource/Lib/didact/didact.lua
+
+GeneratedSource/utils/constants.lua
+GeneratedSource/utils/debug.lua
+GeneratedSource/utils/cooldowns.lua
+GeneratedSource/utils/time.lua
+
+GeneratedSource/Components/config/ConfigAnchor.lua
+GeneratedSource/Components/ActiveCooldowns.lua
+GeneratedSource/Components/Bar.lua
+GeneratedSource/Components/Cooldown.lua
+GeneratedSource/Components/Icon.lua
+
+GeneratedSource/init.lua

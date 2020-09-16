@@ -4,7 +4,6 @@ import { P } from '../Lib/didact/wow-utils';
 import { subscribe } from '../utils/cooldowns';
 import { ConfigAnchor } from './config/ConfigAnchor';
 import { COOLDOWN_FULL_SIZE, BAR_HEIGHT } from '../utils/constants';
-import "@wartoshika/wow-declarations";
 
 interface Timer {
   start: number;
