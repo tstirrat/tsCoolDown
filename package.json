@@ -4,7 +4,7 @@
   "description": "tsCoolDown - React + WoW POC based on wereHamster/coolDown",
   "main": "src/tsCoolDown.ts",
   "scripts": {
-    "clean": "rm -rf ./addon/GeneratedSource",
+    "clean": "rm -rf ./addon/GeneratedSource ./node_modules/ && npm i",
     "build": "npm run clean && tstl",
     "watch": "tstl --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -15,6 +15,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "@brusalk/react-wow-addon": "^1.0.3",
     "@wartoshika/wow-declarations": "^8.3.0-release.1",
     "lua-types": "^2.8.0",
     "ts-node": "^9.0.0",

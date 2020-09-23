@@ -2,7 +2,6 @@
 
 import { throttle } from './time';
 import { stringify } from './debug';
-import { CreateFrame, UIParent } from '@wartoshika/wow-declarations';
 
 export enum Type {
   SPELL = 'SPELL',

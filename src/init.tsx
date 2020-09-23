@@ -1,7 +1,6 @@
-import * as Didact from './Lib/didact/didact';
+import * as ReactWowAddon from "@brusalk/react-wow-addon"
 import { ActiveCooldowns } from './Components/ActiveCooldowns';
 import { BAR_HEIGHT, COOLDOWN_WIDTH, CONFIG_DEFAULTS } from './utils/constants';
-import { CreateFrame, UIParent } from "@wartoshika/wow-declarations";
 
 const tsCoolDown = LibStub('AceAddon-3.0').NewAddon(
   'tsCoolDown',
@@ -23,6 +22,5 @@ tsCoolDown.OnInitialize = function() {
   const frame = CreateFrame('Frame', 'tsCoolDown_UIParent', UIParent);
   frame.SetPoint('CENTER', UIParent, 'CENTER', x, y);
   frame.SetSize(COOLDOWN_WIDTH, BAR_HEIGHT);
-
-  Didact.render(<ActiveCooldowns />, frame);
+  ReactWowAddon.render(<ActiveCooldowns />, frame);
 };

@@ -1,7 +1,6 @@
-import * as Didact from '../Lib/didact/didact';
+import * as ReactWowAddon from '@brusalk/react-wow-addon';
 import { Icon } from './Icon';
 import { Bar } from './Bar';
-import { P } from '../Lib/didact/wow-utils';
 import { ICON_SIZE, COOLDOWN_FULL_SIZE } from '../utils/constants';
 
 export interface Props {
@@ -11,7 +10,7 @@ export interface Props {
   Point: JSX.Point;
 }
 
-export class Cooldown extends Didact.Component<Props> {
+export class Cooldown extends ReactWowAddon.Component<Props> {
   render() {
     const { start, duration, textures, Point } = this.props;
 
@@ -23,7 +22,7 @@ export class Cooldown extends Didact.Component<Props> {
       <frame Size={COOLDOWN_FULL_SIZE} Point={Point}>
         <frame Point="LEFT" Width={ICON_SIZE} Height={ICON_SIZE}>
           {textures.map((texture, i) => (
-            <Icon texture={texture} Point={P('LEFT', -(i * ICON_SIZE))} />
+            <Icon texture={texture} Point={{point: 'LEFT', x: -i * ICON_SIZE}} />
           ))}
         </frame>
         <Bar start={start} duration={duration} Point="RIGHT" />

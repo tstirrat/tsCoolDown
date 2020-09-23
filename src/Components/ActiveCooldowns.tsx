@@ -1,6 +1,5 @@
-import * as Didact from '../Lib/didact/didact';
+import * as ReactWowAddon from '@brusalk/react-wow-addon';
 import { Cooldown } from './Cooldown';
-import { P } from '../Lib/didact/wow-utils';
 import { subscribe } from '../utils/cooldowns';
 import { ConfigAnchor } from './config/ConfigAnchor';
 import { COOLDOWN_FULL_SIZE, BAR_HEIGHT } from '../utils/constants';
@@ -20,7 +19,7 @@ const CONTAINER_NAME = 'tsCoolDown_ActiveCooldowns_Container';
 
 const hasPositionConfig = () => tsCoolDown_Db.x !== undefined;
 
-export class ActiveCooldowns extends Didact.Component<{}, State> {
+export class ActiveCooldowns extends ReactWowAddon.Component<{}, State> {
   state: State = { cooldowns: [], isInConfigMode: !hasPositionConfig() };
 
   constructor(props: {}) {
@@ -47,7 +46,7 @@ export class ActiveCooldowns extends Didact.Component<{}, State> {
         )}
         {cooldowns.map((timer, i) => (
           <Cooldown
-            Point={P('BOTTOMLEFT', 0, i * BAR_HEIGHT)}
+            Point={{point: 'BOTTOMLEFT', x: 0, y: i * BAR_HEIGHT}}
             start={timer.start}
             duration={timer.duration}
             textures={timer.textures}
