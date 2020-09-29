@@ -1,6 +1,5 @@
 /** @noSelfInFile */
 
-import "@wartoshika/wow-declarations";
 import { throttle } from './time';
 import { stringify } from './debug';
 
@@ -204,7 +203,7 @@ function determineScanLocations(_: WoWAPI.Frame, event: WoWAPI.Event) {
   toDo = eventMap[event] || [];
 }
 
-const doScans = throttle(function doScans_inner() {
+const doScans = throttle(() => {
   let didScan = false;
   toDo.forEach(scan => {
     didScan = true;

@@ -1,4 +1,4 @@
-import * as Didact from '../Lib/didact/didact';
+import * as ReactWowAddon from '@brusalk/react-wow-addon';
 import { throttle, getRemainingTime, formatRemainingTime } from '../utils/time';
 import {
   BACKDROP,
@@ -22,7 +22,7 @@ interface State {
   label: string;
 }
 
-export class Bar extends Didact.Component<Props, State> {
+export class Bar extends ReactWowAddon.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     assert(props.start, 'start is required');

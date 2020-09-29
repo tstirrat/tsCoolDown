@@ -2,7 +2,7 @@
   "tasks": [
     {
       "type": "npm",
-      "script": "build",
+      "script": "build-publish",
       "group": {
         "kind": "build",
         "isDefault": true

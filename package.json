@@ -2,16 +2,20 @@
   "name": "tscooldown",
   "version": "1.0.0",
   "description": "tsCoolDown - React + WoW POC based on wereHamster/coolDown",
-  "main": "tsCoolDown/tsCoolDown.ts",
+  "main": "src/tsCoolDown.ts",
   "scripts": {
-    "build": "tstl",
+    "clean": "rm -rf ./addon/GeneratedSource ./node_modules/ && npm i",
+    "build": "npm run clean && tstl",
     "watch": "tstl --watch",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev-publish": "rsync -p -i -r ./addon/ '/mnt/c/Program Files (x86)/World of Warcraft/_ptr_/Interface/AddOns/tsCoolDown/'",
+    "build-publish": "npm run build && npm run dev-publish"
   },
   "author": "",
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "@brusalk/react-wow-addon": "^1.0.3",
     "@wartoshika/wow-declarations": "^8.3.0-release.1",
     "lua-types": "^2.8.0",
     "ts-node": "^9.0.0",

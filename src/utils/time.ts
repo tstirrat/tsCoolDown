@@ -1,5 +1,4 @@
 /** @noSelfInFile */
-import "@wartoshika/wow-declarations";
 
 function fmod(a: number, b: number) {
   return Number((a - Math.floor(a / b) * b));

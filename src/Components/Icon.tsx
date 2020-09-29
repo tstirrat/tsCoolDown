@@ -1,5 +1,4 @@
-import * as Didact from '../Lib/didact/didact';
-import "@wartoshika/wow-declarations";
+import * as ReactWowAddon from '@brusalk/react-wow-addon';
 
 const COLOR_BLACK: JSX.Color4 = [0, 0, 0, 1];
 const SIZE: JSX.Size = [31, 31];
@@ -9,7 +8,7 @@ export interface Props {
   Point: JSX.Point;
 }
 
-export class Icon extends Didact.Component<Props, {}> {
+export class Icon extends ReactWowAddon.Component<Props, {}> {
   render() {
     const { texture, Point } = this.props;
     assert(texture, 'texture is required');

@@ -1,4 +1,4 @@
-import * as Didact from '../../Lib/didact/didact';
+import * as ReactWowAddon from '@brusalk/react-wow-addon';
 import {
   BACKDROP,
   COLOR_WHITE,
@@ -14,7 +14,7 @@ export interface Props {
   onClick?: (frame: WoWAPI.Frame, button: WoWAPI.MouseButton, down: boolean) => void;
 }
 
-export class ConfigAnchor extends Didact.Component<Props, {}> {
+export class ConfigAnchor extends ReactWowAddon.Component<Props, {}> {
   render() {
     const { Point, Size, label } = this.props;
 

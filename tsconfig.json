@@ -4,25 +4,28 @@
     "lib": ["esnext", "dom"],
     "strict": true,
     "jsx": "react",
-    "jsxFactory": "Didact.createElement",
+    "jsxFactory": "ReactWowAddon.createElement",
     "moduleResolution": "node",
-    "rootDir": "tsCoolDown",
-    "outDir": "./tsCoolDown/build",
+    "rootDir": "./src/",
+    "outDir": "addon/GeneratedSource",
     "typeRoots": [
       "node_modules/@wartoshika/wow-declarations",
-      "node_modules/lua-types/5.1"
+      "node_modules/lua-types/5.1",
+      "node_modules/@types"
     ],
+    "skipLibCheck": true,
     "types": [
-      "./@types/didact/",
-      "./@types/ace3/"
+      "./src/@types/ace3/",
+      "@wartoshika/wow-declarations",
+      "@brusalk/react-wow-addon",
+      "lua-types/5.1",
     ]
   },
   "tstl": {
     "luaTarget": "5.1",
-    "luaLibImport": "require",
-    "sourceMapTraceback": true,
-    "luaPlugins": [
-      {"name": "./tsCoolDown/WowJsxTransformer.ts"}
+    "luaPlugins": [ 
+      {"name": "@brusalk/react-wow-addon", "import": "WowJsxTransformer"},
+      {"name": "@brusalk/react-wow-addon", "import": "RequirePreload"},
     ]
   }
 }
